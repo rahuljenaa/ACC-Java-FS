@@ -1,0 +1,11 @@
+package com.accenture.ltt.service;
+
+import com.accenture.ltt.businessbean.EmployeeBean;
+import com.accenture.ltt.businessbean.MeetingBean;
+
+public interface EmployeeService {
+	public Integer insertEmployeeAndMeetings(EmployeeBean employeeBean1,EmployeeBean employeeBean2, MeetingBean m1, MeetingBean m2) throws Exception;
+
+	public void deletingEmployeeAndMeeting(EmployeeBean employeeBean1)
+			throws Exception;
+}
