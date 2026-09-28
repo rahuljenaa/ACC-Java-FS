@@ -1,0 +1,150 @@
+<beans:beans
+	xmlns="http://www.springframework.org/schema/batch"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	https://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/batch
+	https://www.springframework.org/schema/batch/spring-batch.xsd
+	http://www.springframework.org/schema/task 
+	http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+	<beans:import resource="spring-config.xml" />
+
+	<beans:bean id="stepScope"	class="org.springframework.batch.core.scope.StepScope">
+		<beans:property name="autoProxy" value="true" />
+	</beans:bean>
+
+	<beans:bean id="record"	class="com.accenture.lkm.dto.Employee" />
+
+	<beans:bean id="itemReader1"
+		class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<beans:property name="dataSource">
+			<beans:bean
+				class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+				primary="false">
+				<beans:property name="driverClassName"
+					value="${my_cst_db_driver}" />
+				<beans:property name="url" value="${my_cst_db_url}" />
+				<beans:property name="username"
+					value="${my_cst_user}" />
+				<beans:property name="password"
+					value="${my_cst_password}" />
+			</beans:bean>
+		</beans:property>
+		<beans:property name="sql"
+			value="select * from employee" />
+		<beans:property name="rowMapper">
+			<beans:bean
+				class="org.springframework.jdbc.core.BeanPropertyRowMapper">
+				<beans:property name="mappedClass"
+					value="com.accenture.lkm.dto.Employee" />
+			</beans:bean>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="itemReader2"
+		class="org.springframework.batch.item.file.FlatFileItemReader">
+		<beans:property name="resource"
+			value="${input}" />
+		<beans:property name="lineMapper">
+			<beans:bean
+				class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				<beans:property name="lineTokenizer">
+					<beans:bean
+						class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+						<beans:property name="names"
+							value="employeeId, employeeName,designation,dateOfJoining,departmentCode,salary" />
+					</beans:bean>
+				</beans:property>
+				<beans:property name="fieldSetMapper">
+					<beans:bean
+						class="com.accenture.lkm.mapper.CustomRecordFieldSetMapper" />
+				</beans:property>
+			</beans:bean>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="itemProcessor"
+		class="com.accenture.lkm.transformer.CustomItemProcessor" />
+
+	<beans:bean id="itemWriter1" scope="step"
+		class="org.springframework.batch.item.xml.StaxEventItemWriter">
+		<beans:property name="resource"
+			value="file:xml/output_db-#{jobParameters['time']}.xml" />
+		<beans:property name="marshaller"
+			ref="recordMarshaller" />
+		<beans:property name="rootTagName" value="employees" />
+	</beans:bean>
+
+	<beans:bean id="itemWriter2" scope="step"
+		class="org.springframework.batch.item.xml.StaxEventItemWriter">
+		<beans:property name="resource"
+			value="file:xml/output-#{jobParameters['time']}.xml" />
+		<beans:property name="marshaller"
+			ref="recordMarshaller" />
+		<beans:property name="rootTagName" value="employees" />
+	</beans:bean>
+
+	<beans:bean id="recordMarshaller"
+		class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<beans:property name="classesToBeBound">
+			<beans:list>
+				<beans:value>com.accenture.lkm.dto.Employee</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="stepListener"
+		class="com.accenture.lkm.tx.listeners.MSDStepListener">
+
+	</beans:bean>
+	<beans:bean id="chunkListener"
+		class="com.accenture.lkm.tx.listeners.MSDChunkListener">
+
+	</beans:bean>
+	<!-- Defining Abstract Step -->
+	<step id="dummy" abstract="true">
+		<listeners>
+			<listener ref="stepListener" />
+		</listeners>
+	</step>
+
+	<job id="firstBatchJob">
+
+		<step id="step1" next="step2" parent="dummy"> <!-- linking Step to next step and making the parent -->
+			<tasklet>
+				<chunk reader="itemReader1" writer="itemWriter1"
+					processor="itemProcessor" commit-interval="5"><!-- here1 -->
+					<listeners merge="true">
+						<listener ref="chunkListener" />
+					</listeners>
+				</chunk>
+			</tasklet>
+		</step>
+		<step id="step2" parent="dummy"> <!--Making Parent -->
+			<tasklet>
+				<chunk reader="itemReader2" writer="itemWriter2"
+					processor="itemProcessor" commit-interval="5"><!-- here2 -->
+					<listeners merge="true">
+						<listener ref="chunkListener" />
+					</listeners>
+				</chunk>
+			</tasklet>
+		</step>
+	</job>
+	<!-- Repeat Template -->
+	<beans:bean id="customJobLauncher"
+		class="com.accenture.lkm.custom.launcher.CustomJobLauncher">
+		<beans:constructor-arg ref="firstBatchJob" />
+		<beans:constructor-arg ref="jobLauncher" />
+		<beans:constructor-arg value="12" />
+	</beans:bean>
+
+	<beans:bean id="repeatTemplate"
+		class="org.springframework.batch.repeat.support.RepeatTemplate" />
+
+
+
+</beans:beans>

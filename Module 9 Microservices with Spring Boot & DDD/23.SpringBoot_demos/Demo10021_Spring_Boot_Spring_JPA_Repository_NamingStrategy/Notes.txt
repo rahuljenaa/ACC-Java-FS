@@ -1,0 +1,35 @@
+ImprovedNamingStrategy - Generating underScodes (Snake Naming Conventions)
+
+Hibernate 4/5 provides two different naming strategies for use with 
+Hibernate entities: a
+An Implicit Naming Strategy and a Physical Naming Strategy.
+
+The ImplicitNamingStrategy governs how Hibernate derives a logical name 
+from our Java class and property names.
+
+ImplicitNamingStrategy --
+	Customer -> Customer
+	firstName -> firstname
+	lastName -> lastname
+	emailAddress -> emailaddress
+	
+PhysicalNamingStrategy --
+	Customer -> customer
+	firstName -> first_name
+	lastName -> last_name
+	emailAddress -> email_Address
+	
+    
+    
+https://stackoverflow.com/questions/42076121/spring-boot-with-hibernate-i-cant-take-away-table-name-with-underscore
+    
+spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+For JPA 1.0
+-----------
+public class SpringPhysicalNamingStrategy
+extends Object
+implements org.hibernate.boot.model.naming.PhysicalNamingStrategy [default in spring boot]
+
+If u wish to override then in properties file use 
+spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

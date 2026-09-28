@@ -1,0 +1,31 @@
+Requirement:
+	1. Extract data from MySQL db & load it in XML
+	2. Extract data from CSV file & load it in XML
+Using RepeatTemplate to execute this process for n number of times
+
+Reference link:
+https://www.toptal.com/spring/spring-batch-tutorial
+
+Notes:
+By default, Spring Batch executes all jobs it can find (i.e., that are configured as in CustomerReportJobConfig) at startup. 
+To change this behavior, disable job execution at startup by adding the following property to application.properties:
+
+spring.batch.job.enabled=false
+
+Whether bean definition overriding, by registering a definition with the same name as an existing definition, is allowed. default value is false.
+spring.main.allow-bean-definition-overriding=true 
+
+Spring Batch Meta Data is AutoConfigured.
+Need not to write the Batch configuration in spring_config.xml
+
+ In order to make the Step Scope work we have to include following the SpringConfiguration File:
+ 
+	<bean id="stepScope" class="org.springframework.batch.core.scope.StepScope">
+    	<property name="autoProxy" value="true"/>
+	</bean>
+
+Demo Execution:
+
+URL to Execute the Task
+http://localhost:8080/launchjob 
+ 

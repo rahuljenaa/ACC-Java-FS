@@ -1,0 +1,17 @@
+https://www.toptal.com/spring/spring-batch-tutorial
+
+By default, Spring Batch executes all jobs 
+it can find (i.e., that are configured as in CustomerReportJobConfig) at startup. 
+To change this behavior, disable job execution at startup by adding 
+the following property to application.properties:
+
+spring.batch.job.enabled=false
+
+Spring Batch Meta Data is AutoConfigured.
+Need not to write the Batch configuraion.xml
+
+URL to Execute the Task
+http://localhost:8080/launchjob
+ 
+ 
+ 
