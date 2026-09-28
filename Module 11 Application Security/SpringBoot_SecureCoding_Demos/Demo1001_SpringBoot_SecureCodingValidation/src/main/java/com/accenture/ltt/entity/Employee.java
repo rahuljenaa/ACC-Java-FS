@@ -1,0 +1,82 @@
+package com.accenture.ltt.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "employees")
+public class Employee {
+    @Id
+    @Column(name = "employee_id", nullable = false)
+    private Integer employeeId;
+
+	@Column(name = "employee_name", nullable = false)
+	private String employeeName;
+
+    // employeeId is now the primary key; no separate surrogate id
+
+	@Column(nullable = false)
+	private double salary;
+
+	@Column(name = "department_code", nullable = false)
+	private Integer departmentCode;
+
+	// Default constructor
+	public Employee() {
+	}
+
+	// Constructor with all fields
+	public Employee(String employeeName, Integer employeeId, double salary, Integer departmentCode) {
+		this.employeeName = employeeName;
+		this.employeeId = employeeId;
+		this.salary = salary;
+		this.departmentCode = departmentCode;
+	}
+
+    // Getters and setters
+
+	public String getEmployeeName() {
+		return employeeName;
+	}
+
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
+	}
+
+	public Integer getEmployeeId() {
+		return employeeId;
+	}
+
+	public void setEmployeeId(Integer employeeId) {
+		this.employeeId = employeeId;
+	}
+
+	public double getSalary() {
+		return salary;
+	}
+
+	public void setSalary(double salary) {
+		this.salary = salary;
+	}
+
+	public Integer getDepartmentCode() {
+		return departmentCode;
+	}
+
+	public void setDepartmentCode(Integer departmentCode) {
+		this.departmentCode = departmentCode;
+	}
+
+	@Override
+	public String toString() {
+        return "Employee{" +
+                "employeeName='" + employeeName + '\'' +
+				", employeeId=" + employeeId +
+				", salary=" + salary +
+				", departmentCode=" + departmentCode +
+				'}';
+	}
+}
+
