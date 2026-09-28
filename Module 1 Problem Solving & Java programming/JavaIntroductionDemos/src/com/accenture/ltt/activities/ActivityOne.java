@@ -8,9 +8,17 @@ package com.accenture.ltt.activities;
  */
 public class ActivityOne {
     public static void main(String[] args) {
-        int year = 2024;
+        int year = 2026;
 
         // TODO: Write logic using if-else
         // Output should be "Leap Year" or "Not a Leap Year"
+
+        if ((year % 4 == 0 && year % 100 != 0 ) || year % 400 == 0) {
+            System.out.println("Leap Year");
+        }
+        else{
+            System.out.println("Not a Leap Year");
+        }
+        
     }
 }

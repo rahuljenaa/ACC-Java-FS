@@ -1,3 +1,4 @@
+*.class
 target/
 **/target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -16,10 +17,14 @@ bin/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
-**/.idea/
+.idea/**
+!.idea/modules.xml
+!.idea/misc.xml
+!.idea/vcs.xml
+!.idea/Accenture JFS.iml
+out/
+**/out/
 *.iws
-*.iml
 *.ipr
 
 ### NetBeans ###
