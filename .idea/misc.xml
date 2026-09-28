@@ -3,7 +3,6 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/Module 1 Problem Solving &amp; Java programming/Method1Standards_Demos/Demo1002_To-Do_List_Management_System/pom.xml" />
         <option value="$PROJECT_DIR$/Module 7 Spring Stack Essentials/01_SpringCore_Demos/10001_Springs_Loosely_Coupled_Example/pom.xml" />
         <option value="$PROJECT_DIR$/Module 7 Spring Stack Essentials/01_SpringCore_Demos/10002_SpringsDI_Intro_A_setters/pom.xml" />
@@ -189,4 +188,5 @@
     <option name="lookForNested" value="true" />
   </component>
 </project>
+
 
