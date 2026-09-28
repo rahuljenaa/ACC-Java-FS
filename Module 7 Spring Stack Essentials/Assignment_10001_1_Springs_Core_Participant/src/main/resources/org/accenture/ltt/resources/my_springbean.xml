@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- POA-Point of Actions -->
+	<!-- 
+	POA 1: Create one bean object of Customer class with bean id as "customer" using default constructor and with all setter injections
+	Inject the address object through setter
+	 -->
+	
+	
+	<bean id="address" class="org.accenture.lkm.bean.Address">
+		<property name="addressLine1" value="HSR Layout, Sector1"></property>
+		<property name="addressLine2" value="Bangalore, Karnatka"></property>
+	</bean>
+	
+	
+	<!-- POA 2: Write the tag to scan the package named org.accenture.lkm.bean for all stereotype annotations-->
+	
+</beans>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="addressObject" class="com.accenture.ltt.bean.Address">
+		<property name="addressLine1"
+			value="HSR Layout, Sector1,Global" />
+		<property name="addressLine2"
+			value="Bangalore, Karnatka,Global" />
+	</bean>
+
+	<bean id="empObject" class="com.accenture.ltt.bean.Employee">
+		<property name="employeeId" value="1001"></property> <!-- Setter Injection -->
+		<property name="salary" value="200000"></property><!-- Setter Injection -->
+		<constructor-arg ref="addressObject" /> <!-- Constructor Injection -->
+		<!-- Setting List -->
+
+		<property name="listProperty">
+			<list>
+				<value>Some value</value> <!-- Values -->
+				<ref bean="addressObject" /> <!-- Bean Referencing -->
+				<bean id="addressObject2" class="com.accenture.ltt.bean.Address">  <!-- Inner Bean -->
+					<property name="addressLine1" value="HSR Layout, Sector1LocalList" />
+					<property name="addressLine2" value="Bangalore, KarnatkaLocalList" />
+				</bean>
+				<null />
+			</list>
+		</property>
+
+		<property name="setProperty">
+			<set>
+				<value>Some value</value> <!-- Values -->
+				<bean id="addressObject1" class="com.accenture.ltt.bean.Address">  <!-- Inner Bean -->
+					<property name="addressLine1" value="HSR Layout, Sector1LocalSet" />
+					<property name="addressLine2" value="Bangalore, KarnatkaLocalSet" />
+				</bean>
+				<bean id="addressObject2" class="com.accenture.ltt.bean.Address">  <!-- Inner Bean -->
+					<property name="addressLine1" value="HSR Layout, Sector1LocalSet" />
+					<property name="addressLine2" value="Bangalore, KarnatkaLocalSet" />
+				</bean>
+				<ref bean="addressObject" /> <!-- Bean Referencing -->
+			</set>
+		</property>
+
+		<property name="mapProperty">
+			<map>
+				<entry>
+					<key>
+						<value>100</value>
+					</key>
+					<value>John</value>
+				</entry>
+				<entry>
+					<key>
+						<value>101</value>
+					</key>
+					<ref bean="addressObject" />
+				</entry>
+				<entry key="1" value="Some value" /> <!-- Values -->
+				<entry key="2" value-ref="addressObject" /> <!-- Bean Referencing -->
+				<entry key="3">
+					<bean id="addressObject2" class="com.accenture.ltt.bean.Address"> <!-- Inner Bean -->
+						<property name="addressLine1"
+							value="HSR Layout, Sector1LocalMap" />
+						<property name="addressLine2"
+							value="Bangalore, KarnatkaLocalMap" />
+					</bean>
+				</entry>
+				<entry key="null" value="null" />
+			</map>
+
+		</property>
+		<property name="propertiesProperty">
+			<props>
+				<prop key="1">Value1</prop>
+				<prop key="2">Value2</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

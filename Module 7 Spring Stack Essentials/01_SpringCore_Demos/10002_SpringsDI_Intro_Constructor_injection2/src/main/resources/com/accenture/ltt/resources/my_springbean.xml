@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="addressObject" class="com.accenture.ltt.bean.Address">
+		<property name="addressLine1" value="HSR Layout, Sector1"></property><!-- Setter Injection -->
+		<property name="addressLine2" value="Bangalore, Karnatka"></property><!-- Setter Injection -->
+	</bean>
+
+	<bean id="primaryContact" class="com.accenture.ltt.bean.Contact">
+		<constructor-arg value="1" />
+		<constructor-arg value="1234567890" />
+		<constructor-arg value="tom@gmail.com" />
+	</bean>
+	
+	<bean id="emp" class="com.accenture.ltt.bean.Employee">
+	    <constructor-arg ref="addressObject" />
+		<constructor-arg ref="primaryContact" />
+		<!--  Even if we change the order as below it will work -->
+		<!-- 
+		<constructor-arg ref="primaryContact" />
+		<constructor-arg ref="addressObject" />
+		 -->
+	</bean>
+</beans>

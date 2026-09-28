@@ -1,0 +1,42 @@
+LifeCycle:
+
+	1)Xml File is Parsed and Configuration is scanned and 
+	Bean DEfination is loaded
+	
+	1.5) Fires the BeanFactoryPostProcessors which can alter the definition of the bean definition 
+		loaded. example of a BeanFactoryPostProcessors is PropertySourcesPlaceholderConfigurer
+		which replaces the ${} with the values from config file
+	
+	2) BeanPostProcessor are  created/defined by using the BeanFactoryPostProcessors
+
+	3) Instantiates the Bean (EmployeeBean),constructors  are invoked and const injection happens
+
+	4) Setter Injection
+
+	5) After Dependency injection BeanPostPRocessing Phase
+		Post Processing Before intialization Method of BPP (postProcessBeforeInitialization)
+			A - Method of the Bean(EmployeeBean) annotated with PostContruct 
+			I - Method of the Bean(EmployeeBean) afterProperteySet from InitializingBean interface
+		    X - init-method configured in xml(check)
+		Post Processing After Intlization Method of BPP (postProcessAfterInitialization)
+
+	6) A - Method of the Bean(EmployeeBean) annotated with Pre Destroy
+	   I - Method of the Bean(EmployeeBean) destroy from DisposableBean interface
+	   X - destroy method connfigured in xml
+	  if scope of the bean is prototype then point 6 will not happen
+	  if context is not closed then point 6 will not happen
+	  
+
+note post construct and pre construct methods can have any visibility
+
+
+BeanPostPRocessingFactory is used to modify the loaded bean definitions
+at this time no object is created.
+
+BeanPostProcessor where as works on object and instances and this time only 
+proxies are created.
+
+UseFull Links:
+https://coderanch.com/t/450684/framework/difference-BeanPostProcessors-BeanFactoryPostProcessors
+https://stackoverflow.com/questions/30455536/beanfactorypostprocessor-and-beanpostprocessor-in-lifecycle-events
+

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="tempAdd" class="com.accenture.ltt.bean.Address">
+		<property name="addressLine1" value="Hi-TechCity" />
+		<property name="addressLine2" value="Telangana" />
+	</bean>
+	<bean id="address" class="com.accenture.ltt.bean.Address">
+		<property name="addressLine1" value="HSR Layout" />
+		<property name="addressLine2" value="Bangalore" />
+	</bean>
+	<bean id="empObject" class="com.accenture.ltt.bean.Employee" autowire="byName"> <!-- auto wire by constructor -->
+		<property name="employeeId" value="1001" /> <!--Setter Injection -->
+		<property name="employeeName" value="John" />
+		<property name="salary" value="100000.0" />
+	</bean>
+
+	<!-- more bean definitions go here -->
+	<!-- name of the bean will be mapped to the variable name and will be injected 
+		if the name is same by invoking the respective setter.... -->
+
+</beans>

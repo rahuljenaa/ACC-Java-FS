@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd">
+		
+	<context:annotation-config />
+ 	<bean id="employee" class="com.accenture.ltt.bean.Employee" init-method="init" destroy-method="destroyMethod">
+		<property name="firstName" value="JAS" />
+		<property name="lastName" value="BOB" />
+	</bean>
+	
+	<bean class="com.accenture.ltt.bean.CustomBeanPostProcessor1"> 
+	    <property name="order" value="2"></property> 
+	</bean>
+	<bean class="com.accenture.ltt.bean.CustomBeanPostProcessor2">
+	    	<property name="order" value="1"></property> 
+	</bean>
+	
+	
+	<bean class="com.accenture.ltt.bean.CustomBeanFactoryPostProcessor"> 
+	</bean>
+	<!-- more bean definitions go here -->
+
+</beans>

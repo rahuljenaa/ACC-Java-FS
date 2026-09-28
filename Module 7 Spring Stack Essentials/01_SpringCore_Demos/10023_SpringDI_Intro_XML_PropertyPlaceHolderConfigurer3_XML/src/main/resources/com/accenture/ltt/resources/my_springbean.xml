@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="com.accenture.ltt"/>
+	
+	<bean id="propConfig"
+		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<property name="locations"> <!-- Locations -->
+			 <list>
+                <value>classpath:config.properties</value>
+                <value>classpath:msd_config.properties</value>
+            </list>
+		</property>
+	</bean>
+	<bean id="employee" class="com.accenture.ltt.bean.Employee">
+	    <property  name="employeeId" value="${EmployeeId}" />
+	    <property  name="employeeName" value="${EmployeeName}"/>   
+	    <property  name="salary" value="${Salary}"/>
+	    <property  name="address" ref="address"/>
+	    <property  name="test" value="${TestProp}"/>
+	            
+	</bean>
+</beans>
+<!-- https://stackoverflow.com/questions/3403773/using-multiple-property-files-via-propertyplaceholderconfigurer-in-multiple-pr-->
