@@ -4,9 +4,13 @@ import java.util.Comparator;
 
 public class SortByDurationComparator implements Comparator<Course> {
 
+	//TODO
+	
+	//Override compare method to sort based on course duration
 	@Override
 	public int compare(Course course1, Course course2) {
-		return Integer.compare(course1.getDuration(), course2.getDuration());
+		// TODO: Override compare method to sort based on course duration
+		return 0;
 	}
 
 }

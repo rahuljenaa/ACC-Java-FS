@@ -5,7 +5,7 @@ package com.accenture.ltt.threading.sample;
  * Sender - Receiver problem
  * The Sender is supposed to send a data packet to the Receiver
  * The Receiver cannot process the data packet until the Sender is finished sending it
- * Similarly, the Sender mustn’t attempt to send another packet unless the Receiver has already processed the previous packet
+ * Similarly, the Sender mustnâ€™t attempt to send another packet unless the Receiver has already processed the previous packet
  *
  */
 public class SenderReceiverTest {
