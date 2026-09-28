@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accenture Java Full Stack + Gen AI Checklist</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      color: #222;
+      background: #fdfdfd;
+      margin: 0;
+      padding: 24px 16px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 4px;
+      color: #111;
+    }
+    .subtitle {
+      color: #666;
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+    .stats-card {
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 16px;
+      background: #fafafa;
+      margin-bottom: 24px;
+    }
+    .stats-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .progress-bar-bg {
+      background: #e5e5e5;
+      border-radius: 4px;
+      height: 12px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      background: #2563eb;
+      height: 100%;
+      width: 0%;
+      transition: width 0.2s ease;
+    }
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+    .search-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    .btn {
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 1px solid #ccc;
+      background: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #f0f0f0;
+    }
+    .btn-danger {
+      color: #b91c1c;
+      border-color: #fca5a5;
+    }
+    .btn-danger:hover {
+      background: #fee2e2;
+    }
+    .week-section {
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .week-header {
+      background: #f4f4f5;
+      padding: 10px 16px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .week-count {
+      font-size: 0.8rem;
+      font-weight: normal;
+      color: #666;
+    }
+    .checklist-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .item-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 16px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.15s ease;
+    }
+    .item-row:last-child {
+      border-bottom: none;
+    }
+    .item-row:hover {
+      background: #fafafa;
+    }
+    .item-row.completed {
+      background: #f0fdf4;
+    }
+    .item-checkbox {
+      margin-top: 4px;
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+    }
+    .item-content {
+      flex: 1;
+    }
+    .item-title-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+    .item-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #1f2937;
+    }
+    .item-row.completed .item-title {
+      text-decoration: line-through;
+      color: #6b7280;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      border-radius: 3px;
+      border: 1px solid #ddd;
+      background: #f3f4f6;
+      color: #4b5563;
+    }
+    .badge-date {
+      border-color: #cbd5e1;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+    .item-desc {
+      font-size: 0.85rem;
+      color: #555;
+      margin: 0;
+    }
+    .item-row.completed .item-desc {
+      color: #9ca3af;
+    }
+    footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid #eee;
+      color: #888;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Accenture Java Full Stack + Gen AI Checklist</h1>
+    <p class="subtitle">Interactive learning checklist based on the QuantumCrew Day-Wise Plan. State is automatically saved in your browser.</p>
+
+    <div class="stats-card">
+      <div class="stats-header">
+        <span>Progress: <span id="completed-count">0</span> / <span id="total-count">0</span> completed</span>
+        <span id="percent-label">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <input type="text" id="search-input" class="search-input" placeholder="Filter topics, keywords, or dates...">
+      <button class="btn" id="btn-check-all">Check All</button>
+      <button class="btn" id="btn-uncheck-all">Uncheck All</button>
+      <button class="btn btn-danger" id="btn-reset">Reset All</button>
+    </div>
+
+    <div id="checklist-container">
+
+      <div class="week-section" data-week="Week 1">
+        <div class="week-header">
+          <span>Week 1</span>
+          <span class="week-count"><span class="week-done">0</span>/8 completed</span>
+        </div>
+        <ul class="checklist-list">
+    
+          <li class="item-row" data-id="item_1" data-text="java programming full stack introduction, introduction to the core concepts of object-oriented programming: class, object, encapsulation inheritance, polymorphism and language fundamentals 29-jun-2026 week 1">
+            <input type="checkbox" id="item_1" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_1" class="item-title">Java Programming</label>
+                <span class="badge">#1</span> <span class="badge badge-date">📅 29-Jun-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Full stack Introduction, Introduction to the core concepts of Object-Oriented programming: Class, Object, Encapsulation Inheritance, Polymorphism and Language fundamentals</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_2" data-text="java programming (continued) activity: loops/array, classes and object,polymorphism, abstraction,interface. 30-jun-2026 week 1">
+            <input type="checkbox" id="item_2" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_2" class="item-title">Java Programming (Continued)</label>
+                <span class="badge">#2</span> <span class="badge badge-date">📅 30-Jun-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Activity: Loops/Array, Classes and Object,Polymorphism, Abstraction,Interface.</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_3" data-text="method1 standards project structure &amp; naming conventions,code formatting &amp; layout , comments and documentation  week 1">
+            <input type="checkbox" id="item_3" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_3" class="item-title">Method1 Standards</label>
+                <span class="badge">#3</span>
+              </div>
+              <p class="item-desc">Project Structure &amp; Naming Conventions,Code Formatting &amp; Layout , Comments and Documentation</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_4" data-text="debugging understanding errors and exceptions,debugging using print statements,tracing and logging,code review and problem isolation,introduction to eclipse debugger,using breakpoints,inspecting runtime state,working with call stack,exception breakpoints &amp; debug configuration,advanced debugging tools in eclipse 01-jul-2026 week 1">
+            <input type="checkbox" id="item_4" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_4" class="item-title">Debugging</label>
+                <span class="badge">#4</span> <span class="badge badge-date">📅 01-Jul-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Understanding Errors and Exceptions,Debugging using Print Statements,Tracing and Logging,Code Review and Problem Isolation,Introduction to Eclipse Debugger,Using Breakpoints,Inspecting Runtime State,Working with Call Stack,Exception Breakpoints &amp; Debug Configuration,Advanced Debugging Tools in Eclipse</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_5" data-text="code quality introduction to code quality, getting started ,real-time code analysis[sonarqube automation,quality gates automation][we need java 17] 02-jul-2026 week 1">
+            <input type="checkbox" id="item_5" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_5" class="item-title">Code Quality</label>
+                <span class="badge">#5</span> <span class="badge badge-date">📅 02-Jul-2026</span> <span class="badge">⏳ 0.5 Day(s)</span>
+              </div>
+              <p class="item-desc">Introduction to Code Quality, Getting Started ,Real-Time Code Analysis[Sonarqube automation,quality gates automation][we need Java 17]</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_6" data-text="multithreading multithreading  week 1">
+            <input type="checkbox" id="item_6" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_6" class="item-title">Multithreading</label>
+                <span class="badge">#6</span>
+              </div>
+              <p class="item-desc">Multithreading</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_7" data-text="exception handling exception handling 03-jul-2026 week 1">
+            <input type="checkbox" id="item_7" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_7" class="item-title">Exception Handling</label>
+                <span class="badge">#7</span> <span class="badge badge-date">📅 03-Jul-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Exception Handling</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_8" data-text="datastructure what is datastructure, searching &amp; sorting  week 1">
+            <input type="checkbox" id="item_8" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_8" class="item-title">Datastructure</label>
+                <span class="badge">#8</span>
+              </div>
+              <p class="item-desc">What is DataStructure, Searching &amp; Sorting</p>
+            </div>
+          </li>
+        
+        </ul>
+      </div>
+    
+      <div class="week-section" data-week="Week 2">
+        <div class="week-header">
+          <span>Week 2</span>
+          <span class="week-count"><span class="week-done">0</span>/10 completed</span>
+        </div>
+        <ul class="checklist-list">
+    
+          <li class="item-row" data-id="item_9" data-text="collections api collections 06-jul-2026 week 2">
+            <input type="checkbox" id="item_9" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_9" class="item-title">Collections API</label>
+                <span class="badge">#9</span> <span class="badge badge-date">📅 06-Jul-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Collections</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_10" data-text="java 8 features functional interfaces, default and static methods in interfaces,  week 2">
+            <input type="checkbox" id="item_10" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_10" class="item-title">Java 8 Features</label>
+                <span class="badge">#10</span>
+              </div>
+              <p class="item-desc">Functional Interfaces, default and static methods in interfaces,</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_11" data-text="java 8 features(continued) lambdas, method references, stream api 07-jul-2026 week 2">
+            <input type="checkbox" id="item_11" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_11" class="item-title">Java 8 Features(Continued)</label>
+                <span class="badge">#11</span> <span class="badge badge-date">📅 07-Jul-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Lambdas, Method References, Stream API</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_12" data-text="java 11 features file utility, not predicate, jep330, jep320, epsilon garbage colletor jep318, http client standardzation jep321, duration 08-jul-2026 week 2">
+            <input type="checkbox" id="item_12" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_12" class="item-title">Java 11 Features</label>
+                <span class="badge">#12</span> <span class="badge badge-date">📅 08-Jul-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">File Utility, not predicate, JEP330, JEP320, Epsilon Garbage colletor JEP318, HTTP Client standardzation JEP321, Duration</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_13" data-text="java 17 features jdeps, jep, jsr and jls, java 17 features  week 2">
+            <input type="checkbox" id="item_13" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_13" class="item-title">Java 17 Features</label>
+                <span class="badge">#13</span>
+              </div>
+              <p class="item-desc">JDEPS, JEP, JSR and JLS, Java 17 Features</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_14" data-text="testing introduction to unit testing ,introduction to test-driven development (tdd)  week 2">
+            <input type="checkbox" id="item_14" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_14" class="item-title">Testing</label>
+                <span class="badge">#15</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Introduction to Unit Testing ,Introduction to Test-Driven Development (TDD)</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_15" data-text="junit5 junit5: assertions, assumptions  week 2">
+            <input type="checkbox" id="item_15" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_15" class="item-title">Junit5</label>
+                <span class="badge">#16</span>
+              </div>
+              <p class="item-desc">Junit5: Assertions, Assumptions</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_16" data-text="junit5 (continued) junit5: assertions, junit annotations: @test @before, @after, @afterclass, @beforeclass, @rule and testing methods for exceptional conditions 09-jul-2026 week 2">
+            <input type="checkbox" id="item_16" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_16" class="item-title">Junit5 (Continued)</label>
+                <span class="badge">#17</span> <span class="badge badge-date">📅 09-Jul-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Junit5: Assertions, Junit Annotations: @Test @Before, @After, @AfterClass, @BeforeClass, @Rule and testing methods for exceptional conditions</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_17" data-text="performance monitoring introduction to performance monitoring, visualvm for monitoring &amp; profiling , eclipse memory analyzer tool (mat), load testing with jmeter and code profiling in java 10-jul-2026 week 2">
+            <input type="checkbox" id="item_17" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_17" class="item-title">Performance Monitoring</label>
+                <span class="badge">#19</span> <span class="badge badge-date">📅 10-Jul-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Introduction to Performance Monitoring, VisualVM for Monitoring &amp; Profiling , Eclipse Memory Analyzer Tool (MAT), Load Testing with JMeter and Code Profiling in Java</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_18" data-text="solid principles introduction to solid principles ,single responsibility principle (srp), open/closed principle (ocp), liskov substitution principle (lsp), interface segregation principle (isp) and dependency inversion principle (dip)  week 2">
+            <input type="checkbox" id="item_18" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_18" class="item-title">SOLID Principles</label>
+                <span class="badge">#20</span>
+              </div>
+              <p class="item-desc">Introduction to SOLID Principles ,Single Responsibility Principle (SRP), Open/Closed Principle (OCP), Liskov Substitution Principle (LSP), Interface Segregation Principle (ISP) and Dependency Inversion Principle (DIP)</p>
+            </div>
+          </li>
+        
+        </ul>
+      </div>
+    
+      <div class="week-section" data-week="Week 3">
+        <div class="week-header">
+          <span>Week 3</span>
+          <span class="week-count"><span class="week-done">0</span>/5 completed</span>
+        </div>
+        <ul class="checklist-list">
+    
+          <li class="item-row" data-id="item_19" data-text="design patterns &amp; asynch patterns introduction to design patterns, creational patterns, structural patterns, behavioral patterns and introduction to asynchronous patterns in java 13-jul-2026 week 3">
+            <input type="checkbox" id="item_19" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_19" class="item-title">Design Patterns &amp; Asynch Patterns</label>
+                <span class="badge">#21</span> <span class="badge badge-date">📅 13-Jul-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Introduction to Design Patterns, Creational Patterns, Structural Patterns, Behavioral Patterns and Introduction to Asynchronous Patterns in Java</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_20" data-text="jdbc &amp; mysql installing mysql and heidisql ui, need of rdbms in webapplications, using jdbc to connect to mysql, crud operations 14-jul-2026 week 3">
+            <input type="checkbox" id="item_20" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_20" class="item-title">JDBC &amp; MySQL</label>
+                <span class="badge">#22</span> <span class="badge badge-date">📅 14-Jul-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Installing MySQL and HeidiSQL UI, Need of RDBMS in WebApplications, Using JDBC to connect to Mysql, CRUD operations</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_21" data-text="nosql introduction to nosql, nosql data models, working with mongodb in java 15-jul-2026 week 3">
+            <input type="checkbox" id="item_21" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_21" class="item-title">NoSQL</label>
+                <span class="badge">#23</span> <span class="badge badge-date">📅 15-Jul-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Introduction to NoSQL, NoSQL Data Models, Working with MongoDB in Java</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_22" data-text="jpa with hibernate orm orm introduction, entity life cycle, crud operations, strategies to autogenerate primary key, orm relations, transaction management, oql (jpql) 16-july-2026&amp;17-july-2026 week 3">
+            <input type="checkbox" id="item_22" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_22" class="item-title">JPA with Hibernate ORM</label>
+                <span class="badge">#24</span> <span class="badge badge-date">📅 16-july-2026&amp;17-july-2026</span> <span class="badge">⏳ 2 Day(s)</span>
+              </div>
+              <p class="item-desc">ORM introduction, Entity Life Cycle, CRUD operations, Strategies to Autogenerate Primary key, ORM Relations, Transaction management, OQL (JPQL)</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_23" data-text="quiz-2   week 3">
+            <input type="checkbox" id="item_23" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_23" class="item-title">Quiz-2</label>
+                <span class="badge">#25</span>
+              </div>
+              <p class="item-desc"></p>
+            </div>
+          </li>
+        
+        </ul>
+      </div>
+    
+      <div class="week-section" data-week="Week 4">
+        <div class="week-header">
+          <span>Week 4</span>
+          <span class="week-count"><span class="week-done">0</span>/5 completed</span>
+        </div>
+        <ul class="checklist-list">
+    
+          <li class="item-row" data-id="item_24" data-text="introduction to maven, spring core introduction to maven,ioc, dependency injection and its type, autowiring and its types, bean scopes and lifecycle, xml configuration, java configurations and annotations, reading value from properties file 20-july-2026&amp;21-july-2026 week 4">
+            <input type="checkbox" id="item_24" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_24" class="item-title">Introduction to Maven, Spring Core</label>
+                <span class="badge">#26</span> <span class="badge badge-date">📅 20-july-2026&amp;21-july-2026</span> <span class="badge">⏳ 2 Day(s)</span>
+              </div>
+              <p class="item-desc">Introduction to Maven,IOC, Dependency injection and its type, Autowiring and its Types, bean scopes and lifecycle, xml configuration, java configurations and annotations, Reading value from Properties File</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_25" data-text="spring testing spring-test, springjunit integration, spring context caching and dirties read annotation for reloading the context 22-jul-2026 week 4">
+            <input type="checkbox" id="item_25" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_25" class="item-title">Spring Testing</label>
+                <span class="badge">#27</span> <span class="badge badge-date">📅 22-Jul-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Spring-Test, SpringJunit integration, Spring Context caching and Dirties Read annotation for reloading the context</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_26" data-text="spring data jpa spring jpa integration, spring transaction management, spring jpa data: need of dao layer automation  week 4">
+            <input type="checkbox" id="item_26" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_26" class="item-title">Spring Data JPA</label>
+                <span class="badge">#28</span>
+              </div>
+              <p class="item-desc">Spring JPA integration, Spring Transaction Management, Spring JPA data: Need of DAO Layer automation</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_27" data-text="spring data jpa(continued) spring data repositories: crudrepository, jparepository, customrepository, handling queries: query method approach, @query annotation, named and positional parameters 23-jul-2026 week 4">
+            <input type="checkbox" id="item_27" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_27" class="item-title">Spring Data JPA(Continued)</label>
+                <span class="badge">#29</span> <span class="badge badge-date">📅 23-Jul-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Spring Data repositories: CrudRepository, JpaRepository, CustomRepository, handling queries: Query Method Approach, @Query Annotation, Named and Positional Parameters</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_28" data-text="spring mvc spring-mvc: controller, modelandview, parent context and child context,validations (standard and custom) using annotations,spring mvc integration with spring data jpa 24-jul-2026 week 4">
+            <input type="checkbox" id="item_28" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_28" class="item-title">Spring MVC</label>
+                <span class="badge">#30</span> <span class="badge badge-date">📅 24-Jul-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Spring-MVC: Controller, ModelAndView, parent context and child context,Validations (standard and custom) using annotations,Spring MVC Integration with Spring data Jpa</p>
+            </div>
+          </li>
+        
+        </ul>
+      </div>
+    
+      <div class="week-section" data-week="Week 5">
+        <div class="week-header">
+          <span>Week 5</span>
+          <span class="week-count"><span class="week-done">0</span>/6 completed</span>
+        </div>
+        <ul class="checklist-list">
+    
+          <li class="item-row" data-id="item_29" data-text="spring rest spring-rest, resttemplate 27-jul-2026 week 5">
+            <input type="checkbox" id="item_29" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_29" class="item-title">Spring REST</label>
+                <span class="badge">#31</span> <span class="badge badge-date">📅 27-Jul-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Spring-REST, RESTTemplate</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_30" data-text="spring batch spring batch introduction, configuring a job &amp; step  week 5">
+            <input type="checkbox" id="item_30" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_30" class="item-title">Spring Batch</label>
+                <span class="badge">#32</span>
+              </div>
+              <p class="item-desc">Spring Batch Introduction, Configuring a Job &amp; Step</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_31" data-text="spring batch(continued) configuring multiple steps &amp; step elements, job parameters &amp; late binding 28-jul-2026 week 5">
+            <input type="checkbox" id="item_31" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_31" class="item-title">Spring Batch(Continued)</label>
+                <span class="badge">#33</span> <span class="badge badge-date">📅 28-Jul-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Configuring multiple Steps &amp; Step elements, Job Parameters &amp; Late Binding</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_32" data-text="domain driven design (ddd) introduction to ddd, strategic design concepts, tactical design patterns and implementing ddd in java  week 5">
+            <input type="checkbox" id="item_32" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_32" class="item-title">Domain Driven Design (DDD)</label>
+                <span class="badge">#34</span>
+              </div>
+              <p class="item-desc">Introduction to DDD, Strategic Design Concepts, Tactical Design Patterns and Implementing DDD in Java</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_33" data-text="spring boot &amp; microservices spring-boot:  monolithic vs microservice architecture, need to automate the configuration, introduction to spring boot, creating a micro service component using spring rest and spring jpa data (with spring boot), aop (aspect oriented programming), hibernate bean validation api : standard, externalization, profiles and runners,testing: spring-boot test, yaml, packaging war, spring boot with spring batch 29-july-2026 &amp; 30-july-2026 week 5">
+            <input type="checkbox" id="item_33" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_33" class="item-title">Spring Boot &amp; Microservices</label>
+                <span class="badge">#35</span> <span class="badge badge-date">📅 29-july-2026 &amp; 30-july-2026</span> <span class="badge">⏳ 2 Day(s)</span>
+              </div>
+              <p class="item-desc">Spring-Boot:  Monolithic vs Microservice architecture, need to automate the configuration, Introduction to Spring Boot, creating a micro service component using Spring REST and Spring JPA data (with spring boot), AOP (Aspect Oriented programming), Hibernate Bean Validation API : Standard, Externalization, Profiles and Runners,Testing: Spring-Boot test, YAML, packaging WAR, Spring Boot with Spring Batch</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_34" data-text="spring cloud challenges in micro service architecture, microservice design patterns, introduction to spring cloud, spring cloud train releases, spring cloud netflix eureka server, circuit breaker: resilience4j,load balancer 31-jul-2026 week 5">
+            <input type="checkbox" id="item_34" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_34" class="item-title">Spring Cloud</label>
+                <span class="badge">#36</span> <span class="badge badge-date">📅 31-Jul-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Challenges in Micro service architecture, Microservice Design patterns, Introduction to spring cloud, spring cloud train releases, spring cloud netflix eureka server, Circuit breaker: Resilience4j,Load balancer</p>
+            </div>
+          </li>
+        
+        </ul>
+      </div>
+    
+      <div class="week-section" data-week="Week 6">
+        <div class="week-header">
+          <span>Week 6</span>
+          <span class="week-count"><span class="week-done">0</span>/7 completed</span>
+        </div>
+        <ul class="checklist-list">
+    
+          <li class="item-row" data-id="item_35" data-text="microservice monitoring &amp; api communication spring boot actuator, declarative rest call openfeign client, open swagger api documentation and sleuth &amp;  zipkin 03-aug-2026 week 6">
+            <input type="checkbox" id="item_35" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_35" class="item-title">Microservice Monitoring &amp; API Communication</label>
+                <span class="badge">#37</span> <span class="badge badge-date">📅 03-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Spring Boot Actuator, Declarative Rest call OpenFeign Client, Open Swagger API documentation and Sleuth &amp;  Zipkin</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_36" data-text="secure coding practices (owasp) introduction to application security, common secure coding practices, secure database access and secure api &amp; web practices 04-aug-2026 week 6">
+            <input type="checkbox" id="item_36" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_36" class="item-title">Secure coding practices (OWASP)</label>
+                <span class="badge">#38</span> <span class="badge badge-date">📅 04-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Introduction to Application Security, Common Secure Coding Practices, Secure Database Access and Secure API &amp; Web Practices</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_37" data-text="spring security need of spring security, security expression, language, implementation, authentication provider, consuming spring secured rest api 05-aug-2026 week 6">
+            <input type="checkbox" id="item_37" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_37" class="item-title">Spring Security</label>
+                <span class="badge">#39</span> <span class="badge badge-date">📅 05-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Need of Spring Security, Security Expression, Language, Implementation, Authentication Provider, Consuming Spring Secured REST API</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_38" data-text="  06-aug-2026 week 6">
+            <input type="checkbox" id="item_38" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_38" class="item-title"></label>
+                <span class="badge">#40</span> <span class="badge badge-date">📅 06-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc"></p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_39" data-text="case study-1   week 6">
+            <input type="checkbox" id="item_39" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_39" class="item-title">Case Study-1</label>
+                <span class="badge">#41</span>
+              </div>
+              <p class="item-desc"></p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_40" data-text="mcq assessment-1   week 6">
+            <input type="checkbox" id="item_40" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_40" class="item-title">MCQ Assessment-1</label>
+                <span class="badge">#42</span>
+              </div>
+              <p class="item-desc"></p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_41" data-text="front-end foundations html, css and javascript and xml 07-aug-2026 week 6">
+            <input type="checkbox" id="item_41" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_41" class="item-title">Front-End Foundations</label>
+                <span class="badge">#43</span> <span class="badge badge-date">📅 07-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">HTML, CSS and Javascript and XML</p>
+            </div>
+          </li>
+        
+        </ul>
+      </div>
+    
+      <div class="week-section" data-week="Week 7">
+        <div class="week-header">
+          <span>Week 7</span>
+          <span class="week-count"><span class="week-done">0</span>/8 completed</span>
+        </div>
+        <ul class="checklist-list">
+    
+          <li class="item-row" data-id="item_42" data-text="react(continued) introduction to react, types of react components, form handling in react, client-side validations 10-aug-2026 week 7">
+            <input type="checkbox" id="item_42" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_42" class="item-title">React(Continued)</label>
+                <span class="badge">#44</span> <span class="badge badge-date">📅 10-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Introduction to React, Types of React Components, Form Handling in React, Client-side validations</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_43" data-text="integration with springboot api introduction to functional components and hooks, details about usestate() and useeffect()  hook,  week 7">
+            <input type="checkbox" id="item_43" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_43" class="item-title">Integration with Springboot API</label>
+                <span class="badge">#45</span>
+              </div>
+              <p class="item-desc">Introduction to functional components and hooks, Details about useState() and useEffect()  hook,</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_44" data-text="integration with springboot api consuming the spring boot microservice based applications using axios and hooks 11-aug-2026 week 7">
+            <input type="checkbox" id="item_44" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_44" class="item-title">Integration with Springboot API</label>
+                <span class="badge">#46</span> <span class="badge badge-date">📅 11-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Consuming the Spring Boot Microservice based applications using axios and hooks</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_45" data-text="   week 7">
+            <input type="checkbox" id="item_45" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_45" class="item-title"></label>
+                <span class="badge">#47</span>
+              </div>
+              <p class="item-desc"></p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_46" data-text="mock hands on assessment  12-aug-2026 week 7">
+            <input type="checkbox" id="item_46" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_46" class="item-title">Mock Hands On Assessment</label>
+                <span class="badge">#48</span> <span class="badge badge-date">📅 12-Aug-2026</span>
+              </div>
+              <p class="item-desc"></p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_47" data-text="cloud compute essentials 1. introduction to cloud computing  
+2. cloud compute resorces (vms, containers, serverless)  
+3. public, private, hybrid, and multi-cloud models  
+4. introduction to amazon ec2  
+5. activity: create ec2 instance on aws   
+6. introduction to containerization and docker  
+7. activity: create amazon ecs (elastic container service)  
+8. activity: create amazon eks (elastic kubernetes service)  
+9. serverless computing on aws  
+10. activity: create aws lambda – architecture, runtimes, and triggers  
+11. activity: create resources on aws 12-aug-2026 &amp;13-aug-2026 week 7">
+            <input type="checkbox" id="item_47" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_47" class="item-title">Cloud Compute Essentials</label>
+                <span class="badge">#49</span> <span class="badge badge-date">📅 12-Aug-2026 &amp;13-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">1. Introduction to cloud computing  
+2. Cloud compute Resorces (VMs, containers, serverless)  
+3. Public, private, hybrid, and multi-cloud models  
+4. Introduction to Amazon EC2  
+5. Activity: Create EC2 instance on AWS   
+6. Introduction to containerization and Docker  
+7. Activity: Create Amazon ECS (Elastic Container Service)  
+8. Activity: Create Amazon EKS (Elastic Kubernetes Service)  
+9. Serverless computing on AWS  
+10. Activity: Create AWS Lambda – architecture, runtimes, and triggers  
+11. Activity: Create resources on AWS</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_48" data-text="cloud storage &amp; networking basics 1. introduction to storage (object store, relational, and nosql)  
+2. introduction to networking (vpc, subnet)   
+3. activity: create and configure an s3 bucket  
+4. activity: design and implement a sample schema on amazon rds  
+5. introduction to nosql data models: key-value, document, columnar  
+6. activity: create schema on dynamodb   
+7. introduction to vpc components: cidr, route tables, gateways  
+8. activity: create a vpc with public and private subnets  
+9. quiz 13-aug-2026 &amp; 14-aug-2026 week 7">
+            <input type="checkbox" id="item_48" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_48" class="item-title">Cloud Storage &amp; Networking Basics</label>
+                <span class="badge">#50</span> <span class="badge badge-date">📅 13-Aug-2026 &amp; 14-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">1. Introduction to storage (object store, relational, and NoSQL)  
+2. Introduction to networking (VPC, subnet)   
+3. Activity: Create and configure an S3 bucket  
+4. Activity: Design and implement a sample schema on Amazon RDS  
+5. Introduction to NoSQL data models: key-value, document, columnar  
+6. Activity: Create schema on DynamoDB   
+7. Introduction to VPC components: CIDR, route tables, gateways  
+8. Activity: Create a VPC with public and private subnets  
+9. Quiz</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_49" data-text="maven &amp; git fundamentals 1. introduction to project build, 2. what is build automation, 3. maven - build automation, 4. maven plugin/goals/mojo, 5. maven build phases, 6. maven life cycle: surefire plugin, 7. introduction to git, 8. activity: git installation, 9. activity: create local repository, 10. activity: create feature branch, 11. activity: merge conflict, 12. activity: setting up gitlab account, 13. activity: pushing local repository into remote repository using gitlab, 14. activity: create gitlab repository and work with it, 15. activity: make changes into remote repository, 16. activity: pull request, 17. activity: git tags 14-aug-2026 &amp; 17-aug-2026 week 7">
+            <input type="checkbox" id="item_49" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_49" class="item-title">Maven &amp; Git Fundamentals</label>
+                <span class="badge">#51</span> <span class="badge badge-date">📅 14-Aug-2026 &amp; 17-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">1. Introduction to project build, 2. What is build automation, 3. Maven - build automation, 4. Maven plugin/goals/MOJO, 5. Maven build phases, 6. Maven life cycle: Surefire plugin, 7. Introduction to Git, 8. Activity: Git installation, 9. Activity: Create local repository, 10. Activity: Create feature branch, 11. Activity: Merge conflict, 12. Activity: Setting up GitLab account, 13. Activity: Pushing local repository into remote repository using GitLab, 14. Activity: Create GitLab repository and work with it, 15. Activity: Make changes into remote repository, 16. Activity: Pull request, 17. Activity: Git tags</p>
+            </div>
+          </li>
+        
+        </ul>
+      </div>
+    
+      <div class="week-section" data-week="Week 8">
+        <div class="week-header">
+          <span>Week 8</span>
+          <span class="week-count"><span class="week-done">0</span>/5 completed</span>
+        </div>
+        <ul class="checklist-list">
+    
+          <li class="item-row" data-id="item_50" data-text="ci/cd with jenkins 1. introduction to ci/cd, 2. introduction to types of pipeline: declarative and scripted pipeline, 3. activity: installation of jenkins, 4. activity: create pipeline, 5. activity: create declarative pipeline without jenkinsfile,6. activity: create declarative pipeline using jenkinsfile, 7. activity: create scripted pipeline without jenkinsfile, 8. activity: create imperative/scripted pipeline using jenkinsfile, 9. activity: trigger pipeline from gitlab , 10. activity: comparison of declarative pipeline and scripted pipeline 17-aug-2026 &amp; 18-aug-2026 week 8">
+            <input type="checkbox" id="item_50" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_50" class="item-title">CI/CD with Jenkins</label>
+                <span class="badge">#52</span> <span class="badge badge-date">📅 17-Aug-2026 &amp; 18-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">1. Introduction to CI/CD, 2. Introduction to types of pipeline: declarative and scripted pipeline, 3. Activity: Installation of Jenkins, 4. Activity: Create pipeline, 5. Activity: Create declarative pipeline without Jenkinsfile,6. Activity: Create declarative pipeline using Jenkinsfile, 7. Activity: Create scripted pipeline without Jenkinsfile, 8. Activity: Create imperative/scripted pipeline using Jenkinsfile, 9. Activity: Trigger pipeline from GitLab , 10. Activity: Comparison of declarative pipeline and scripted pipeline</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_51" data-text="code quality with sonarqube 1. need of code quality, 2. examples that violate code quality, 3. introduction to sonarqube, 4. activity: sonarqube installation, 5. activity: install sonarqube plugins, 6. activity: create project in sonarqube, 7. activity: use sonarqube scanner to analyze project, 8. activity: use sonarlint in eclipse ide to analyze project, 9. activity: run the project for code review using sonarqube as a maven project, 10. activity: create project in sonarqube 18-aug-2026 &amp; 19-aug-2026 week 8">
+            <input type="checkbox" id="item_51" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_51" class="item-title">Code Quality with SonarQube</label>
+                <span class="badge">#53</span> <span class="badge badge-date">📅 18-Aug-2026 &amp; 19-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">1. Need of code quality, 2. Examples that violate code quality, 3. Introduction to SonarQube, 4. Activity: SonarQube installation, 5. Activity: Install SonarQube plugins, 6. Activity: Create project in SonarQube, 7. Activity: Use SonarQube scanner to analyze project, 8. Activity: Use SonarLint in Eclipse IDE to analyze project, 9. Activity: Run the project for code review using SonarQube as a Maven project, 10. Activity: Create project in SonarQube</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_52" data-text="infrastructure as code with terraform 1. introduction to terraform, 2. terraform configuration, 3. terraform architecture, 4. activity: install terraform, 5. activity: authenticate and configure terraform with aws, 6. activity: create virtual machine resource using terraform, 7. activity: create storage bucket using terraform, 8. activity: create cloudsql using terraform, 9. activity: create iam role using terraform 19-aug-2026 &amp; 20-aug-2026 week 8">
+            <input type="checkbox" id="item_52" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_52" class="item-title">Infrastructure as Code with Terraform</label>
+                <span class="badge">#54</span> <span class="badge badge-date">📅 19-Aug-2026 &amp; 20-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">1. Introduction to Terraform, 2. Terraform configuration, 3. Terraform architecture, 4. Activity: Install Terraform, 5. Activity: Authenticate and configure Terraform with AWS, 6. Activity: Create virtual machine resource using Terraform, 7. Activity: Create storage bucket using Terraform, 8. Activity: Create CloudSQL using Terraform, 9. Activity: Create IAM role using Terraform</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_53" data-text="containerization with docker 1. introduction to docker, 2. docker architecture – managing docker images and containers, 3. activity: docker installation, 4. activity: create dockerfile,5. activity: create dockerhub account, 6. activity: create docker images, 7. activity: tag, list, delete images, 8. activity: push image to docker hub registry, 9. activity: pull image from docker hub registry, 10. activity: create container, 11. activity: stop, pause, list, remove container, 12. activity: build and run mysql container, 13. activity: networking in docker, 14. activity: create and mount volume, 15. activity: run springboot and mysql using docker compose 20-aug-2026 &amp; 21-aug-2026 week 8">
+            <input type="checkbox" id="item_53" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_53" class="item-title">Containerization with Docker</label>
+                <span class="badge">#55</span> <span class="badge badge-date">📅 20-Aug-2026 &amp; 21-Aug-2026</span> <span class="badge">⏳ 1.5 Day(s)</span>
+              </div>
+              <p class="item-desc">1. Introduction to Docker, 2. Docker architecture – managing Docker images and containers, 3. Activity: Docker installation, 4. Activity: Create Dockerfile,5. Activity: Create DockerHub account, 6. Activity: Create Docker images, 7. Activity: Tag, list, delete images, 8. Activity: Push image to Docker Hub registry, 9. Activity: Pull image from Docker Hub registry, 10. Activity: Create container, 11. Activity: Stop, pause, list, remove container, 12. Activity: Build and run MySQL container, 13. Activity: Networking in Docker, 14. Activity: Create and mount volume, 15. Activity: Run SpringBoot and MySQL using Docker Compose</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_54" data-text="container orchestration with kubernetes 1. introduction to kubernetes, 2. kubernetes architecture – deployment, services (loadbalancer), storage, 3. activity: software setup, 4. activity: setup kubectl, 5. activity: setup minikube cluster, 6. activity: kubernetes commands,7. activity: deploy spring boot application, 8. activity: scale up/down pods , 9. activity: autoscaling spring boot application, 10. activity: deploy spring boot app using manifest file, 11. activity: change deployment image, 12. activity: deploy spring boot app with mysql, 13. activity: deploy spring boot app with cpu and memory limits 24-aug-2026 week 8">
+            <input type="checkbox" id="item_54" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_54" class="item-title">Container Orchestration with Kubernetes</label>
+                <span class="badge">#56</span> <span class="badge badge-date">📅 24-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">1. Introduction to Kubernetes, 2. Kubernetes architecture – deployment, services (LoadBalancer), storage, 3. Activity: Software setup, 4. Activity: Setup kubectl, 5. Activity: Setup Minikube cluster, 6. Activity: Kubernetes commands,7. Activity: Deploy Spring Boot application, 8. Activity: Scale up/down pods , 9. Activity: Autoscaling Spring Boot application, 10. Activity: Deploy Spring Boot app using manifest file, 11. Activity: Change deployment image, 12. Activity: Deploy Spring Boot app with MySQL, 13. Activity: Deploy Spring Boot app with CPU and memory limits</p>
+            </div>
+          </li>
+        
+        </ul>
+      </div>
+    
+      <div class="week-section" data-week="Week 9">
+        <div class="week-header">
+          <span>Week 9</span>
+          <span class="week-count"><span class="week-done">0</span>/5 completed</span>
+        </div>
+        <ul class="checklist-list">
+    
+          <li class="item-row" data-id="item_55" data-text="agile principles &amp; scrum practices development using agile principles, practices and devops automation tools. 25-aug-2026 week 9">
+            <input type="checkbox" id="item_55" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_55" class="item-title">Agile Principles &amp; Scrum Practices</label>
+                <span class="badge">#58</span> <span class="badge badge-date">📅 25-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Development using Agile Principles, Practices and DevOps automation tools.</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_56" data-text="iterative development(jira) processes: iterative development (jira/ confluence) 26-aug-2026 week 9">
+            <input type="checkbox" id="item_56" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_56" class="item-title">Iterative development(Jira)</label>
+                <span class="badge">#59</span> <span class="badge badge-date">📅 26-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Processes: Iterative development (Jira/ Confluence)</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_57" data-text="genai &amp; agentic ai introduction to gen ai, gen ai in java, agentic ai, difference between gen ai &amp; agentic ai, prompt engineering, ai testing,  week 9">
+            <input type="checkbox" id="item_57" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_57" class="item-title">GenAI &amp; Agentic AI</label>
+                <span class="badge">#60</span>
+              </div>
+              <p class="item-desc">Introduction to GEN AI, Gen AI in Java, Agentic AI, Difference between Gen AI &amp; Agentic AI, Prompt Engineering, AI Testing,</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_58" data-text="genai &amp; agentic ai introduction to github copilot, features, subscriptions, integration with different ides, usage, security and privacy concerns and limitations, introduction to spring ai 27-aug-2026 week 9">
+            <input type="checkbox" id="item_58" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_58" class="item-title">GenAI &amp; Agentic AI</label>
+                <span class="badge">#61</span> <span class="badge badge-date">📅 27-Aug-2026</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc">Introduction to GitHub Copilot, Features, Subscriptions, Integration with different IDEs, Usage, Security and Privacy Concerns and Limitations, Introduction to Spring AI</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_59" data-text="assessment - mcq 02   week 9">
+            <input type="checkbox" id="item_59" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_59" class="item-title">Assessment - MCQ 02</label>
+                <span class="badge">#63</span>
+              </div>
+              <p class="item-desc"></p>
+            </div>
+          </li>
+        
+        </ul>
+      </div>
+    
+      <div class="week-section" data-week="Week 10">
+        <div class="week-header">
+          <span>Week 10</span>
+          <span class="week-count"><span class="week-done">0</span>/4 completed</span>
+        </div>
+        <ul class="checklist-list">
+    
+          <li class="item-row" data-id="item_60" data-text="enterprise application development participants will build an enterprise application covering key technologies of java fullstack by following agile practices and experiencing devops tools (git, maven, sonarqube &amp; jenkins) 28-aug-2026 t0 4th-sep-2026 week 10">
+            <input type="checkbox" id="item_60" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_60" class="item-title">Enterprise Application Development</label>
+                <span class="badge">#64</span> <span class="badge badge-date">📅 28-Aug-2026 t0 4th-Sep-2026</span> <span class="badge">⏳ 6 Day(s)</span>
+              </div>
+              <p class="item-desc">Participants will build an enterprise application covering key technologies of Java fullstack by following Agile practices and experiencing DevOps tools (Git, Maven, Sonarqube &amp; Jenkins)</p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_61" data-text="hon + evaluation + capstone project evaluation   week 10">
+            <input type="checkbox" id="item_61" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_61" class="item-title">HON + Evaluation + Capstone project Evaluation</label>
+                <span class="badge">#65</span> <span class="badge">⏳ 1 Day(s)</span>
+              </div>
+              <p class="item-desc"></p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_62" data-text="junit: junit 5.x   week 10">
+            <input type="checkbox" id="item_62" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_62" class="item-title">Junit: Junit 5.x</label>
+                <span class="badge">#Version</span>
+              </div>
+              <p class="item-desc"></p>
+            </div>
+          </li>
+        
+          <li class="item-row" data-id="item_63" data-text="mysql: mysql-installer-community-8.0.1   week 10">
+            <input type="checkbox" id="item_63" class="item-checkbox">
+            <div class="item-content">
+              <div class="item-title-row">
+                <label for="item_63" class="item-title">MySQL: mysql-installer-community-8.0.1</label>
+                
+              </div>
+              <p class="item-desc"></p>
+            </div>
+          </li>
+        
+        </ul>
+      </div>
+    
+    </div>
+
+    <footer>
+      Accenture Java Full Stack Engineering &bull; Progress saved locally in browser &bull; Works offline
+    </footer>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'accenture_jfs_checklist_state_v1';
+    
+    function loadState() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveState(state) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function updateStats() {
+      const allCheckboxes = document.querySelectorAll('.item-checkbox');
+      const total = allCheckboxes.length;
+      let completed = 0;
+
+      allCheckboxes.forEach(cb => {
+        const row = cb.closest('.item-row');
+        if (cb.checked) {
+          completed++;
+          row.classList.add('completed');
+        } else {
+          row.classList.remove('completed');
+        }
+      });
+
+      document.getElementById('total-count').textContent = total;
+      document.getElementById('completed-count').textContent = completed;
+      const pct = total === 0 ? 0 : Math.round((completed / total) * 100);
+      document.getElementById('percent-label').textContent = pct + '%';
+      document.getElementById('progress-fill').style.width = pct + '%';
+
+      // Update per-week counters
+      document.querySelectorAll('.week-section').forEach(sec => {
+        const weekTotal = sec.querySelectorAll('.item-checkbox').length;
+        const weekDone = sec.querySelectorAll('.item-checkbox:checked').length;
+        const doneSpan = sec.querySelector('.week-done');
+        if (doneSpan) doneSpan.textContent = weekDone;
+      });
+    }
+
+    function init() {
+      const state = loadState();
+      const checkboxes = document.querySelectorAll('.item-checkbox');
+
+      checkboxes.forEach(cb => {
+        if (state[cb.id]) {
+          cb.checked = true;
+        }
+        cb.addEventListener('change', () => {
+          const currentState = loadState();
+          currentState[cb.id] = cb.checked;
+          saveState(currentState);
+          updateStats();
+        });
+      });
+
+      updateStats();
+
+      // Search Filter
+      const searchInput = document.getElementById('search-input');
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        document.querySelectorAll('.item-row').forEach(row => {
+          const text = row.getAttribute('data-text') || '';
+          if (!query || text.includes(query)) {
+            row.style.display = 'flex';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+
+        // Hide empty weeks during search
+        document.querySelectorAll('.week-section').forEach(sec => {
+          const visibleRows = Array.from(sec.querySelectorAll('.item-row')).filter(r => r.style.display !== 'none');
+          sec.style.display = visibleRows.length > 0 ? 'block' : 'none';
+        });
+      });
+
+      // Actions
+      document.getElementById('btn-check-all').addEventListener('click', () => {
+        const state = {};
+        checkboxes.forEach(cb => {
+          cb.checked = true;
+          state[cb.id] = true;
+        });
+        saveState(state);
+        updateStats();
+      });
+
+      document.getElementById('btn-uncheck-all').addEventListener('click', () => {
+        checkboxes.forEach(cb => cb.checked = false);
+        saveState({});
+        updateStats();
+      });
+
+      document.getElementById('btn-reset').addEventListener('click', () => {
+        if (confirm('Are you sure you want to reset all progress?')) {
+          localStorage.removeItem(STORAGE_KEY);
+          checkboxes.forEach(cb => cb.checked = false);
+          updateStats();
+        }
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
