@@ -1,0 +1,24 @@
+cd C:\Program Files\Java\jdk-11.0.4\bin
+C:\Program Files\Java\jdk-11.0.4\bin>java zeleven/Tester1001.java
+There is a demo placed in jdk under zeleven.
+No .class file is generated
+
+
+java --source=11 zeleven/Tester1002_MSD_She_BangDemo
+
+
+C:\Program Files\Java\jdk-11.0.4\bin>java --source=11 zeleven/Tester1002_MSD_ScriptDemo
+
+Running as Script types..
+Different class name and file name
+
+
+https://www.javacodegeeks.com/2018/07/single-file-source-code-programs-jdk-11.html
+
+
+
+
+
+https://en.wikipedia.org/wiki/JDK_Enhancement_Proposal
+
+JDK Enhancement Proposals
