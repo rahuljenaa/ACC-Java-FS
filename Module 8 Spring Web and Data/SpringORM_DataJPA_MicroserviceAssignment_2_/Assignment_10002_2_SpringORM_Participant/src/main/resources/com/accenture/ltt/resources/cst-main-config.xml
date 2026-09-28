@@ -1,0 +1,15 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- POA-Point of Actions -->
+	<!-- POA 1: Write the tag to scan the package named org.accenture.lkm.service 
+		and org.accenture.lkm.dao for all stereotype annotations -->
+
+	<import resource="cst_jpa_spring_config.xml" />
+</beans>

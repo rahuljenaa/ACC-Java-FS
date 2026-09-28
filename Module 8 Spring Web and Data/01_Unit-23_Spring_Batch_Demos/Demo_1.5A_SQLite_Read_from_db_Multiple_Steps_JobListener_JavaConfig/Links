@@ -1,0 +1,51 @@
+Requirement:
+===========
+From MYSQL Database Pump the Data of Employees  to a XML file.
+From employee.csv Pump the Data of Employees  to a XML file.
+use SQLLite as Job Repo /MetaData Database
+Note: first pump Database data to XML and then Later CSV  file Data to Database
+One Listener should run before and After the Job Completion
+
+ 
+ 1) Open POM and dependencies
+ 2) spring-config.xml for meta data configuration
+ 	Highlight usage of SQLLite Database----IMP
+ 3) spring-batch-config.xml for reader/processor and Writer
+ 	Highlight Database Reader-------IMP
+ 	Highlight FlatFile Reader-------IMP
+ 	(reader can be Flat file, XML, JMS Reader, DAtabse Reader/Customer Reader)
+ 	(writer can  be Flat file, XML, JMS, Database/Custom Writer)
+ 	(Tell about Job->Step->Tasklet->Chunk->ItemReader and ItemWriter)
+ 	(commit interval means how many records can be read in a single chunk we will see it later..)
+ 	
+ 	Highlight how a job can have 2 steps using next.
+ 	Each Step has its on reader and Writer
+ 	
+ 	Highlight about Listener in the Job----------------New-----------
+ 	    <batch:listeners>
+            <batch:listener ref="msdListener"/>
+        </batch:listeners>
+    Listener should be Spring Bean, so show the Bean Registration    
+ 	Show the code of com.accenture.ltt.job.configuration.MSDJobConfigListener
+ 	
+ 4)Open UITester, highlight a job can have multiple instances.
+ 	Instance actual run the Job.
+ 	instances are uniquely identified by JobName and JobParameters  	
+ 5) Observe the output.xml inside the xml folder
+ 	output_db.xml	
+ 
+ 
+ Heart of Spring Batch is a job. 
+Job is template which tells how batch processing has to be performed.
+Job has following:
+	Instances(logical run of a job is called job instance)
+	JobExecution(attempt to run a job )
+	ExecutionContext
+	Parameters
+	Steps(1 or more, a job cn have one more steps)
+		They define a phase of processing (reading, processing, wrting )
+		spring-batch-reference-model.png
+	StepExecution
+ 
+ 
+ 

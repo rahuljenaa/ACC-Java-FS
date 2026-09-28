@@ -1,0 +1,38 @@
+https://docs.spring.io/spring-batch/docs/4.3.4/reference/html/step.html#controllingStepFlow
+
+Conditional Flow:
+
+Split Flows:
+
+Every scenario described so far has involved a Job that executes its Steps one at a time in a linear fashion. 
+In addition to this typical style, the Spring Batch namespace also allows for a job to be configured with parallel flows using the 'split' element. 
+As shown below, the 'split' element contains one or more 'flow' elements, where entire separate flows can be defined. 
+A 'split' element may also contain any of the previously discussed transition elements such as the 'next' attribute or the 'next', 'end', 'fail', or 'pause' elements.
+
+<split id="split1" next="step4">
+    <flow>
+        <step id="step1" parent="s1" next="step2"/>
+        <step id="step2" parent="s2"/>
+    </flow>
+    <flow>
+        <step id="step3" parent="s3"/>
+    </flow>
+</split>
+<step id="step4" parent="s4"/>
+
+Demo Execution
+=============
+Just used to have unrelated steps...
+In current Demo even if Step1 fails still step2 is executed because Step2 is independent of Step1
+Note: Step1 fails due to invalid db credentials.
+
+Re-check
+=======
+Open Demo_1.4_SQLite_Read_from_db_Multiple_Steps
+make the password to connect to DB as "roo" instead of "root" and observe Step2 is not executed..
+
+
+Reference Link
+============
+https://docs.spring.io/spring-batch/docs/4.3.4/reference/html/step.html#split-flows
+

@@ -1,0 +1,100 @@
+https://docs.spring.io/spring-batch/trunk/reference/html/configureStep.html
+https://docs.spring.io/spring-batch/trunk/apidocs/org/springframework/batch/core/JobParametersValidator.html
+
+
+ JobParametersValidator
+A job declared in the XML namespace or using any subclass of AbstractJob can optionally declare a validator for the job parameters at runtime. 
+This is useful when for instance you need to assert that a job is started with all its mandatory parameters. 
+There is a DefaultJobParametersValidator that can be used to constrain combinations of simple mandatory and optional parameters, 
+and for more complex constraints you can implement the interface yourself. 
+The configuration of a validator is supported through the XML namespace through a child element of the job, 
+e.g:
+@Bean(name = "firstBatchJob")
+	public Job firstBatchJob(@Qualifier("step1")Step step1,
+			@Qualifier("step2")Step step2, 
+			@Qualifier("step3_error")Step step3,
+			@Qualifier("step4")Step step4,
+			@Qualifier("msd_decider")MSDDecider msdDecider,
+			MSDJobParameterValidator jobParameterValidator) {
+		return jobBuilderFactory.get("firstBatchJob")
+					.validator(jobParameterValidator)
+					.start(step1)
+					.next(step2)
+					.next(msdDecider)
+					.from(msdDecider).on("FAILED").to(step3)
+					.from(msdDecider).on("COMPLETED").to(step4)
+					.end()
+					.build();
+	}
+The validator can be specified as a reference (as above) or as a nested bean/Inner bean definition in the beans namespace.
+
+First JobParameter Validator runs then Later Decider will Run
+
+
+
+Execute the Program with Default Credentials.
+Execute the Program with UserName: MS D
+
+
+
+==========================================================================================================
+
+
+
+Decider:
+In some situations, more information than the ExitStatus may be required to decide which step to execute next. In this case, a JobExecutionDecider can be used to assist in the decision.
+
+public class MyDecider implements JobExecutionDecider {
+    public FlowExecutionStatus decide(JobExecution jobExecution, StepExecution stepExecution) {
+        if (someCondition) {
+            return "FAILED";
+        }
+        else {
+            return "COMPLETED";
+        }
+    }
+}
+In the job configuration, a "decision" tag will specify the decider to use as well as all of the transitions.
+
+@Bean(name = "firstBatchJob")
+	public Job firstBatchJob(@Qualifier("step1")Step step1,
+			@Qualifier("step2")Step step2, 
+			@Qualifier("step3_error")Step step3,
+			@Qualifier("step4")Step step4,
+			@Qualifier("msd_decider")MSDDecider msdDecider,
+			MSDJobParameterValidator jobParameterValidator) {
+		return jobBuilderFactory.get("firstBatchJob")
+					.validator(jobParameterValidator)
+					.start(step1)
+					.next(step2)
+					.next(msdDecider)
+					.from(msdDecider).on("FAILED").to(step3)
+					.from(msdDecider).on("COMPLETED").to(step4)
+					.end()
+					.build();
+	}
+
+
+	@Bean(name="msd_decider")
+	public MSDDecider msdDecider() {
+		return new MSDDecider();
+	}
+	
+In our example use case:
+if JobParameters are set to user:MSD and id:111998083
+then run the all the steps of the job otherwise if it is not set then run the default step of the Job
+
+
+
+
+
+Show the code of the decider
+Show the code to create parameters
+Show the code of SpringBatchConfig to use the decider
+
+
+
+
+
+
+

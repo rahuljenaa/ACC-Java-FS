@@ -1,0 +1,47 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/jdbc 
+    http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+
+		<!-- PropertyPlaceholderConfigurer bean is used to read properties from the specified location -->
+		<bean	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+			<property name="location">
+				<!-- <value>classpath:com/accenture/ltt/resources/cst_conn.properties</value>  -->
+				<value>classpath:cst_conn.properties</value> 
+			</property>
+		</bean>
+
+		<!-- Reading properties using the placeholder ${} -->
+		<bean id="dataSource"	class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="driverClassName" value="${cst_db_driver}" />
+			<property name="url" value="${cst_db_url}" />
+			<property name="username" value="${cst_user}" />
+			<property name="password" value="${cst_password}" />
+		</bean>
+
+
+		<!-- create job repository - meta data tables automatically -->
+		<jdbc:initialize-database data-source="dataSource">
+			<jdbc:script	location="org/springframework/batch/core/schema-drop-mysql.sql" />
+			<jdbc:script	location="org/springframework/batch/core/schema-mysql.sql" />
+		</jdbc:initialize-database>
+
+		<!-- stored job-meta in memory -->
+		<bean id="transactionManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
+		
+		<!-- stored job-meta in database -->
+		<bean id="jobRepository"	class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
+			<property name="dataSource" ref="dataSource" />
+			<property name="transactionManager" ref="transactionManager" />
+			<property name="databaseType" value="mysql" />
+		</bean>		
+
+		<bean id="jobLauncher"	 class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+			<property name="jobRepository" ref="jobRepository" />
+		</bean>
+
+	</beans>

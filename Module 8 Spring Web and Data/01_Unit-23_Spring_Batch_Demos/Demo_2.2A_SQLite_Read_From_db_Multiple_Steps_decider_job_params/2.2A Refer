@@ -1,0 +1,74 @@
+Requirement
+----------------------
+	1) Pass the username & id as Job Parameters, while launching the job.
+		username is ADMIN [String]
+		id is 11498686 [Long]
+		
+	2) We create Decider class to verify the credentials & return the FLOW status
+			COMPLETED - start with step1
+			FAILED - go to the step3_error
+			
+	Step1: Read from database & write it to an output_db.xml, next to step2
+	Step2: Read from csv file & write it to an output.xml. If step2 "Completed" goto step4. If step2 "FAILED" goto step3	
+	Step3: Using custom Reader & Writer
+	Step4: Using custom Reader & Writer
+
+Programmatic Flow Decisions/Decider:
+In some situations, more information than the ExitStatus may be required to decide which step to execute next. 
+In this case, a JobExecutionDecider can be used to assist in the decision.
+
+Example:
+public class MyDecider implements JobExecutionDecider {
+    public FlowExecutionStatus decide(JobExecution jobExecution, StepExecution stepExecution) {
+        if (someCondition) {
+            return "FAILED";
+        }
+        else {
+            return "COMPLETED";
+        }
+    }
+}
+In the job configuration, a "decision" tag will specify the decider to decide the transitions.
+
+	<job id="job">
+	    <step id="step1" parent="s1" next="decision" />	
+	    <decision id="decision" decider="decider">
+	        <next on="FAILED" to="step2" />
+	        <next on="COMPLETED" to="step3" />
+	    </decision>	
+	    <step id="step2" parent="s2" next="step3"/>
+	    <step id="step3" parent="s3" />
+	</job>
+
+<beans:bean id="decider" class="com.MyDecider"/>
+
+Demo Execution:
+=============
+In our example use case:
+If JobParameters are set to user:ADMIN and id:11456896
+then run all the steps of the job otherwise if it is not set correctly, then run the default step of the Job
+
+1) Execute the Job by using Valid Credentials
+2) Execute the Job using invalid Credentials
+
+
+Refer in the code:
+
+Observe the code of the decider
+Observe the code to create parameters
+Observe the code of spring-batch-config.xml to use the decider
+
+Notes:
+
+JobExecutionDecider: JobExecutionDecider is an interface in Spring Batch that allows you to make 
+conditional decisions during the execution of a job. 
+It provides a way to dynamically determine the next step to be executed based on certain conditions or business rules.
+You can implement this interface to create a custom decision-making logic. 
+The JobExecutionDecider is typically used within a step to determine the next step based on the outcome of the 
+current step's execution. 
+For example, you can use a JobExecutionDecider to decide whether to execute a specific step based on the result 
+of a previous step.
+
+Refer:
+====
+https://docs.spring.io/spring-batch/docs/4.3.4/reference/html/step.html#programmaticFlowDecisions

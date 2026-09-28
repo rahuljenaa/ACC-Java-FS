@@ -1,0 +1,25 @@
+Demo_1.1A_JDBC_Database_Meta_data_JavaConfig
+=========================================
+Requirement: 
+	From employee.csv file pump the Employee details to output.xml file.
+	Using MySQL database as Job Repo/MetaData Database
+
+Pre-requisite:
+	Execute Employee.sql file script in MySQL database.
+
+Observations:
+ 1) Open pom.xml file and observe the dependencies
+ 2) Observe SpringBatchConfig.java class for Spring batch configuration.
+ 3) Open UITester, Observe that AnnotationConfigApplicationContext(SpringBatchConfig.class) is used.  	
+ 4) Run the UITester main class, and Observe that output.xml created inside the xml folder	
+ [Note: xml folder and output.xml file can be deleted. Both will be created on execution]
+ 
+This demo is created to use Java configuration class instead of xml configuration file. [Alternative optionn]
+ 
+Versions:
+	Spring Batch : 4.3.4
+	Spring 		      : 5.3.14
+	MySQL 		  : 8.0.19
+	
+Reference Links :
+	https://docs.spring.io/spring-batch/docs/4.3.4/reference/html/

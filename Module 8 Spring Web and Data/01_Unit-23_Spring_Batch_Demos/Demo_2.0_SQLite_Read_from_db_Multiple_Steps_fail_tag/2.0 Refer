@@ -1,0 +1,47 @@
+https://docs.spring.io/spring-batch/docs/4.3.4/reference/html/step.html#controllingStepFlow
+Conditional Flow:
+
+<fail> element usage:
+here step2 executed first is reading from file and converting it to XML
+but Step1 is not able to connect to database.
+
+in Step1 we are able to see usage of  <next on="*" to="step3"/>it means always go to Step3.
+Only two special characters are allowed in the pattern:
+	"*" matches zero or more characters
+	"?" matches exactly one character
+For example, "c*t" matches "cat" and "count", while "c?t" matches "cat" but not "count".
+
+when Step1 fails also it moves to Step3 and job is finished with status complete.
+To prevent it we use fail element.
+
+<fail> element:
+The 'Fail' Element
+The 'fail' element instructs a Job to stop with a BatchStatus of FAILED. Unlike the 'end' element, 
+the 'fail' element will not prevent the Job from being restarted. The 'fail' element also allows for an optional 'exit-code' 
+attribute that can be used to customize the ExitStatus of the Job. If no 'exit-code' attribute is given, 
+then the ExitStatus will be "FAILED" by default, to match the BatchStatus.
+
+
+In spring-batch-config.xml uncomment the below tag in Line no. 117 and observe the status as failed
+<fail on="FAILED" exit-code="EARLY TERMINATION"/>
+
+Other type of elements:
+
+
+
+<stop> element:
+The 'Stop' Element
+The 'stop' element instructs a Job to stop with a BatchStatus of STOPPED. 
+Stopping a Job can provide a temporary break in processing so that the operator can take some action before restarting the Job. 
+The 'stop' element requires a 'restart' attribute that specifies the step where execution should pick up when the Job is restarted.
+
+
+
+5.3.2 
+Conditional Flow
+5.3.3 
+Elements	
+5.3.4	
+Programmatic Flow Decisions
+
+

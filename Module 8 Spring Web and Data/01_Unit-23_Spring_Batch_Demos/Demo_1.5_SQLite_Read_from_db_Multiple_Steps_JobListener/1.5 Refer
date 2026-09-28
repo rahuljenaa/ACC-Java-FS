@@ -1,0 +1,85 @@
+Demo_1.5_SQLite_Read_from_db_Multiple_Steps_JobListener
+===============================================
+Requirement: 
+	From MYSQL Database Pump the Data of Employees  to a XML file.
+	From employee.csv Pump the Data of Employees  to a XML file.
+	use SQLLite as Job Repo /MetaData Database
+	Note: first pump Database data to XML and then Later CSV  file Data to Database
+	One Listener should run before and After the Job Completion
+	
+Pre-requisite:
+	Execute Employee.sql file script in MySQL database. [If already executed ignore this]
+	
+Observations:
+ 1) Open pom.xml file and observe the dependencies
+ 2) spring-config.xml for meta data configuration in resources folder
+ 		Highlight usage of SQLLite Database----IMP
+ 3) spring-batch-config.xml for reader/processor and Writer
+ 		Highlight Database Reader-------IMP
+ 		 	Highlight FlatFile Reader-------IMP
+ 	(reader can be Flat file, XML, JMS Reader, DAtabse Reader/Customer Reader)
+ 	(writer can  be Flat file, XML, JMS, Database/Custom Writer)
+ 	(Tell about Job->Step->Tasklet->Chunk->ItemReader and ItemWriter)
+ 	(commit interval means how many records can be read in a single chunk we will see it later..)
+ 	
+ 	Highlight how a job can have 2 steps using next.
+ 	Each Step has its on reader and Writer
+ 	
+ 	Highlight about Listener in the Job----------------New-----------
+ 	    <batch:listeners>
+            <batch:listener ref="msdListener"/>
+        </batch:listeners>
+    Listener should be Spring Bean, so show the Bean Registration    
+ 	Show the code of com.accenture.ltt.job.configuration.MSDJobConfigListener
+ 	
+ 4)Open UITester, highlight a job can have multiple instances.
+ 	Instance actual run the Job.
+ 	instances are uniquely identified by JobName and JobParameters  	
+ 5) Observe the output.xml and output_db.xml files inside the xml folder	
+ [Note: xml folder and output.xml file can be deleted. Both will be created on execution]
+ 
+Notes:
+
+	Heart of Spring Batch is a job. 
+	Job is template which tells how batch processing has to be performed.
+	Job has following:
+		Instances(logical run of a job is called job instance)
+		JobExecution(attempt to run a job )
+		ExecutionContext
+		Parameters
+	Steps 1 or more, a job can have one more steps)
+		They define a phase of processing (reading, processing, writing )
+		spring-batch-reference-model.png
+	StepExecution
+	
+	Linking Step to Next one.
+		<batch:step id="step1" next="step2">
+ 
+Versions:
+	Spring Batch : 4.3.4
+	Spring 		      : 5.3.14
+	MySQL 		  : 8.0.19
+	
+Reference Links:
+
+	<job id="firstBatchJob">
+		<step id="step1" next="step2"> <!-- linking Step to next step -->
+			<tasklet>
+				<chunk reader="itemReader1" writer="itemWriter1"
+					processor="itemProcessor" commit-interval="10">
+				</chunk>
+			</tasklet>
+		</step>
+		<step id="step2">
+			<tasklet>
+				<chunk reader="itemReader2" writer="itemWriter2"
+					processor="itemProcessor" commit-interval="10">
+				</chunk>
+			</tasklet>
+		</step>
+	<listeners>
+		<listener ref="msdListener"></listener>
+	</listeners>
+	</job>
+	
+	<beans:bean id="msdListener" class="com.accenture.ltt.job.configuration.MSDJobConfigListener"></beans:bean>

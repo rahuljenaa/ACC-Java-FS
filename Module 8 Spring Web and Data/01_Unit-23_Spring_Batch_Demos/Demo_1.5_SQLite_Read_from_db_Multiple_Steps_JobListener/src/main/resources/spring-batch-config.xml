@@ -1,0 +1,95 @@
+<beans:beans
+	xmlns="http://www.springframework.org/schema/batch"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/batch https://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<beans:import resource="spring-config.xml" />
+
+	<beans:bean id="itemReader1"
+		class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<beans:property name="dataSource"
+			ref="mysql_dataSource" />
+		<beans:property name="sql"
+			value="select * from employee" />
+		<beans:property name="rowMapper">
+			<beans:bean
+				class="org.springframework.jdbc.core.BeanPropertyRowMapper">
+				<beans:property name="mappedClass"
+					value="com.accenture.ltt.dto.Employee" />
+			</beans:bean>
+		</beans:property>
+	</beans:bean>
+	<beans:bean id="itemReader2"
+		class="org.springframework.batch.item.file.FlatFileItemReader">
+		<beans:property name="resource"
+			value="classpath:employee.csv" />
+		<beans:property name="lineMapper">
+			<beans:bean
+				class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				<beans:property name="lineTokenizer">
+					<beans:bean
+						class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+						<beans:property name="names"
+							value="employeeId,employeeName,designation,dateOfJoining,departmentCode,salary" />
+					</beans:bean>
+				</beans:property>
+				<beans:property name="fieldSetMapper">
+					<beans:bean
+						class="com.accenture.ltt.mapper.CustomRecordFieldSetMapper" />
+				</beans:property>
+			</beans:bean>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="itemProcessor"
+		class="com.accenture.ltt.transformer.CustomItemProcessor" />
+
+	<!-- ItemWriter writes the data items into output.xml file -->
+	<beans:bean id="itemWriter1"
+		class="org.springframework.batch.item.xml.StaxEventItemWriter">
+		<beans:property name="resource"
+			value="file:xml/output_db.xml" />
+		<beans:property name="marshaller"
+			ref="recordMarshaller" />
+		<beans:property name="rootTagName" value="employees" />
+	</beans:bean>
+	<beans:bean id="itemWriter2"
+		class="org.springframework.batch.item.xml.StaxEventItemWriter">
+		<beans:property name="resource"
+			value="file:xml/output.xml" />
+		<beans:property name="marshaller"
+			ref="recordMarshaller" />
+		<beans:property name="rootTagName" value="employees" />
+	</beans:bean>
+	<beans:bean id="recordMarshaller"
+		class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<beans:property name="classesToBeBound">
+			<beans:list>
+				<beans:value>com.accenture.ltt.dto.Employee</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<job id="firstBatchJob">
+		<step id="step1" next="step2"> <!-- linking Step to next step -->
+			<tasklet>
+				<chunk reader="itemReader1" writer="itemWriter1"
+					processor="itemProcessor" commit-interval="10">
+				</chunk>
+			</tasklet>
+		</step>
+		<step id="step2">
+			<tasklet>
+				<chunk reader="itemReader2" writer="itemWriter2"
+					processor="itemProcessor" commit-interval="10">
+				</chunk>
+			</tasklet>
+		</step>
+	<listeners>
+		<listener ref="msdListener"></listener>
+	</listeners>
+	</job>
+	<!-- Listener for Job -->
+	<beans:bean id="msdListener" class="com.accenture.ltt.job.configuration.MSDJobConfigListener"></beans:bean>
+</beans:beans>

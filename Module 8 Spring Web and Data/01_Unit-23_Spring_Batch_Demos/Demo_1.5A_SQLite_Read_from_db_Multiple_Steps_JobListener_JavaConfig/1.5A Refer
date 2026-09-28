@@ -1,0 +1,28 @@
+Demo_1.5A_SQLite_Read_from_db_Multiple_Steps_JobListener_JavaConfig
+=========================================================
+Requirement: 
+	From MYSQL Database Pump the Data of Employees  to a XML file.
+	From employee.csv Pump the Data of Employees  to a XML file.
+	use SQLLite as Job Repo /MetaData Database
+	Note: first pump Database data to XML and then Later CSV  file Data to Database
+	One Listener should run before and After the Job Completion
+	
+Pre-requisite:
+	Execute Employee.sql file script in MySQL database. [If already executed ignore this]
+	
+Observations:
+ 1) Open pom.xml file and observe the dependencies
+ 2) Observe SpringBatchConfig.java class for Spring batch configuration.
+ 3) Open UITester, Observe that AnnotationConfigApplicationContext(SpringBatchConfig.class) is used.  	
+ 4) Run the UITester main class, and Observe that output.xml created inside the xml folder	
+ [Note: xml folder and output.xml file can be deleted. Both will be created on execution]
+ 
+
+Versions:
+	Spring Batch : 4.3.4
+	Spring 		      : 5.3.14
+	MySQL 		  : 8.0.19
+	
+Reference Links:
+
+	

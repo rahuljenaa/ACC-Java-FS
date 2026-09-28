@@ -1,0 +1,80 @@
+https://docs.spring.io/spring-batch/trunk/reference/html/configureStep.html
+https://docs.spring.io/spring-batch/trunk/apidocs/org/springframework/batch/core/JobParametersValidator.html
+
+
+ JobParametersValidator
+A job declared in the XML namespace or using any subclass of AbstractJob can optionally declare a validator for the job parameters at runtime. 
+This is useful when for instance you need to assert that a job is started with all its mandatory parameters. 
+There is a DefaultJobParametersValidator that can be used to constrain combinations of simple mandatory and optional parameters, 
+and for more complex constraints you can implement the interface yourself. 
+The configuration of a validator is supported through the XML namespace through a child element of the job, 
+e.g:
+<job id="job1" parent="baseJob3">
+    <step id="step1" parent="standaloneStep"/>
+    <validator ref="paremetersValidator"/>
+</job>
+The validator can be specified as a reference (as above) or as a nested bean/Inner bean definition in the beans namespace.
+
+
+Demo Execution:
+=============
+First JobParameterValidator runs then Later Decider will Run
+
+Execute the Program with Default Credentials.
+Execute the Program with UserName: AD MIN
+==========================================================================================================
+
+Decider:
+In some situations, more information than the ExitStatus may be required to decide which step to execute next. 
+In this case, a JobExecutionDecider can be used to assist in the decision.
+
+public class MyDecider implements JobExecutionDecider {
+    public FlowExecutionStatus decide(JobExecution jobExecution, StepExecution stepExecution) {
+        if (someCondition) {
+            return "FAILED";
+        }
+        else {
+            return "COMPLETED";
+        }
+    }
+}
+In the job configuration, a "decision" tag will specify the decider to use as well as all of the transitions.
+
+<job id="job">
+    <step id="step1" parent="s1" next="decision" />
+
+    <decision id="decision" decider="decider">
+        <next on="FAILED" to="step2" />
+        <next on="COMPLETED" to="step3" />
+    </decision>
+
+    <step id="step2" parent="s2" next="step3"/>
+    <step id="step3" parent="s3" />
+</job>
+
+<beans:bean id="decider" class="com.MyDecider"/>
+
+Demo Execution:
+=============
+In our example use case:
+if JobParameters are set to user:ADMIN and id:11456896
+then run the all the steps of the job otherwise if it is not set then run the default step of the Job
+
+Refer the code:
+============
+Observe the code of the decider
+Observe the code to create parameters
+Observe the code of spring-batch-config.xml to use the decider
+
+Notes:
+======
+JobParametersValidator: 
+JobParametersValidator is an interface in Spring Batch that allows you to validate the job parameters provided at the time of job execution. 
+It provides a way to ensure that the input parameters passed to a job are valid and meet certain criteria. 
+When you implement this interface, you can define custom validation logic to check if the job parameters are correct.
+If the validation fails, an exception is thrown, and the job execution is aborted. 
+The JobParametersValidator is typically used before the job starts, during the job parameter validation phase, 
+to ensure that the input parameters are valid before proceeding with the execution.
+
+
+

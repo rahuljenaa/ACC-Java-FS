@@ -1,0 +1,103 @@
+Demo_1.8_SQLite_Read_From_db_Multiple_Steps_Multiple_Listeners_next_attribute
+=================================================================
+Requirement: 
+	From MYSQL Database Pump the Data of Employees  to a XML file.
+	From employee.csv Pump the Data of Employees  to a XML file.
+	use SQLLite as Job Repo/MetaData Database
+	Note: first pump Database data to XML and then Later CSV  file Data to Database
+	One Listener should run before and After the Job Completion
+	
+Pre-requisite:
+	Execute Employee.sql file script in MySQL database. [If already executed ignore this]
+	
+Observations:
+ 1) Open pom.xml file and observe the dependencies
+ 2) spring-config.xml for meta data configuration in resources folder
+ 		Highlight usage of SQLLite Database----IMP
+ 3) spring-batch-config.xml for reader/processor and Writer
+ 		Highlight Database Reader-------IMP
+ 		 	Highlight FlatFile Reader-------IMP
+ 	(reader can be Flat file, XML, JMS Reader, DAtabse Reader/Customer Reader)
+ 	(writer can  be Flat file, XML, JMS, Database/Custom Writer)
+ 	(Tell about Job->Step->Tasklet->Chunk->ItemReader and ItemWriter)
+ 	(Note: commit interval means how many records can be read in a single chunk we will see it in this demo. 
+ 	Refer below..)
+ 	
+ 	Highlight how a job can have 2 steps using next.
+ 	Each Step has its on reader and Writer
+ 	
+ 	Highlight about Listener in the Job----------------New-----------
+ 	    <batch:listeners>
+            <batch:listener ref="msdListener"/>
+        </batch:listeners>
+    Listener should be Spring Bean, so show the Bean Registration    
+ 	Show the code of com.accenture.lkm.job.configuration.MSDJobConfigListener
+ 	
+ 4)Open UITester, highlight a job can have multiple instances.
+ 	Instance actual run the Job.
+ 	instances are uniquely identified by JobName and JobParameters  	
+ 5) Observe the output.xml and output_db.xml files inside the xml folder	
+ [Note: xml folder and output.xml file can be deleted. Both will be created on execution]
+ 
+Notes:
+
+https://docs.spring.io/spring-batch/trunk/reference/html/configureStep.html
+
+Conditional Flow:
+================
+In order to handle more complex scenarios, the Spring Batch namespace allows transition elements to be 
+defined within the step element. One such transition is the "next" element.
+ Like the "next" attribute, the "next" element will tell the Job which Step to execute next. 
+ However, unlike the attribute, any number of "next" elements are allowed on a given Step, 
+ 
+ Note: that a single step cannot have both a "next" attribute and a transition element.
+
+Explain dummy reader and writer created to create dummy steps
+Steps cannot exist without tasklets and chunks.
+chunks cannot exist without defining reader and writer.
+
+For Dummy Custom Reader and Writer:
+https://docs.spring.io/spring-batch/trunk/reference/html/readersAndWriters.html#customReader
+
+
+
+Other type of elements:
+<end> element:
+The 'end' element instructs a Job to stop with a BatchStatus of COMPLETED. 
+A Job that has finished with status COMPLETED cannot be restarted 
+(the framework will throw a JobInstanceAlreadyCompleteException). 
+The 'end' element also allows for an optional 'exit-code' attribute that can be used to customize the ExitStatus of the Job. 
+
+<fail> element:
+The 'Fail' Element
+The 'fail' element instructs a Job to stop with a BatchStatus of FAILED. Unlike the 'end' element, 
+the 'fail' element will not prevent the Job from being restarted. The 'fail' element also allows for an optional 'exit-code' 
+attribute that can be used to customize the ExitStatus of the Job. If no 'exit-code' attribute is given, 
+then the ExitStatus will be "FAILED" by default, to match the BatchStatus.
+
+
+<stop> element:
+The 'Stop' Element
+The 'stop' element instructs a Job to stop with a BatchStatus of STOPPED. 
+Stopping a Job can provide a temporary break in processing so that the operator can take some action before restarting the Job. 
+The 'stop' element requires a 'restart' attribute that specifies the step where execution should pick up when the Job is restarted.
+
+
+
+5.3.2 
+Conditional Flow
+5.3.3 
+Elements	
+5.3.4	
+Programmatic Flow Decisions
+
+
+
+Versions:
+	Spring Batch : 4.3.4
+	Spring 		      : 5.3.14
+	MySQL 		  : 8.0.19
+	
+Reference Links:
+https://docs.spring.io/spring-batch/trunk/reference/html/configureStep.html
+https://docs.spring.io/spring-batch/trunk/reference/html/readersAndWriters.html#customReader

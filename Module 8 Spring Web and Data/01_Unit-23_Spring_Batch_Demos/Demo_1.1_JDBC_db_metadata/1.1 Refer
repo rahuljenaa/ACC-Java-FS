@@ -1,0 +1,72 @@
+Demo_1.1_JDBC_db_metadata
+================================
+Requirement: 
+	From employee.csv file pump the Employee details to output.xml file.
+	Using MySQL database as Job Repo/MetaData Database
+
+Pre-requisite:
+	Execute Employee.sql file script in MySQL database. [Create the database]
+
+Observations:
+ 1) Open pom.xml file and observe the dependencies
+ 2) spring-config.xml for meta data configuration in resources folder
+ 			data source - MySQL connection properties
+ 			job repository - meta data tables configured in MySQL
+ 			job launcher
+ 3) spring-batch-config.xml for reader/processor and Writer
+ 	(reader can be Flat file, XML, JMS Reader, Databse Reader/Customer Reader)
+ 	(writer can  be Flat file, XML, JMS, Database/Custom Writer)
+ 	(Tell about Job->Step->Tasklet->Chunk->ItemReader and ItemWriter)
+ 	(commit interval means how many records can be read in a single chunk we will see it later..)
+ 4)Open UITester, highlight a job can have multiple instances.
+ 	Instance actual run the Job.
+ 	instances are uniquely identified by JobName and JobParameters  	
+ 5) Observe the output.xml inside the xml folder	
+ [Note: xml folder and output.xml file can be deleted. Both will be created on execution]
+ 
+Notes:
+	Heart of Spring Batch is a job. 
+	Job is template which tells how batch processing has to be performed.
+	Job has following:
+		Instances(logical run of a job is called job instance)
+		JobExecution(attempt to run a job )
+		ExecutionContext
+		Parameters
+	Steps 1 or more, a job can have one more steps)
+		They define a phase of processing (reading, processing, writing )
+		
+	StepExecution
+ 
+ TaskletStep
+ ==========
+Chunk-oriented processing is not the only way to process in a Step.
+What if a Step must consist of a simple stored procedure call? 
+You could implement the call as an ItemReader and return null after the procedure finishes. 
+However, doing so is a bit unnatural, since there would need to be a no-op ItemWriter. 
+Spring Batch provides the TaskletStep for this scenario.
+
+Tasklet is a simple interface that has one method, execute, which is called repeatedly by the TaskletStep 
+until it either returns RepeatStatus.FINISHED or throws an exception to signal a failure. 
+Each call to a Tasklet is wrapped in a transaction. 
+Tasklet implementors might call a stored procedure, a script, or a simple SQL update statement.
+
+To create a TaskletStep in Java, the bean passed to the tasklet method of the builder should implement the Tasklet interface. 
+No call to chunk should be called when building a TaskletStep. 
+
+The following example shows a simple tasklet:
+
+@Bean
+public Step step1() {
+    return this.stepBuilderFactory.get("step1")
+    			.tasklet(myTasklet())
+    			.build();
+}
+ 
+Versions:
+	Spring Batch : 4.3.4
+	Spring 		      : 5.3.14
+	MySQL 		  : 8.0.19
+	
+Reference Links :
+	https://docs.spring.io/spring-batch/docs/4.3.4/reference/html/
+	https://docs.spring.io/spring-batch/docs/4.3.4/reference/html/domain.html#batch-namespace

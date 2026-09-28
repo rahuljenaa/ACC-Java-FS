@@ -1,0 +1,20 @@
+Configuring Jobs (multiple steps)
+https://docs.spring.io/spring-batch/trunk/reference/html/configureJob.html
+
+
+In addition to steps a job configuration can contain other 
+elements that help with parallelization (<split/>), 
+declarative flow control (<decision/>) and externalization of flow definitions (<flow/>).
+
+Discussion on Job configuration Listener
+
+
+
+Configuring and Running a Job
+	4.1. Configuring a Job
+	4.1.1. Restartability
+	4.1.2. Intercepting Job Execution
+	4.1.3. Inheriting from a Parent Job
+	4.1.4. JobParametersValidator
+
+we see all above Slowly

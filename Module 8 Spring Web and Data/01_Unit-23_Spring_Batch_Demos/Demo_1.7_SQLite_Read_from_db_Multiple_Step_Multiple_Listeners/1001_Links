@@ -1,0 +1,12 @@
+https://stackoverflow.com/questions/20289814/beandefinitionparsingexception-configuration-the-element-step2-is-unreachabl
+
+Linking Step to Next one.
+<batch:step id="step1" next="step2">
+
+Discuss about all Listeners and Chunk size
+Read
+Write
+Process
+
+Tell and highlight how chunk is getting read, process and Written
+Emphasize on Chunk Processing

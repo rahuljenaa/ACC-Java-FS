@@ -1,0 +1,93 @@
+Explain  use of the #{jobParameters['inputPath']} and scope "step" in spring-batch-config.xml
+so that variables are evaluated at step execution time dynamically.
+Setting the parameters.
+
+Observe UITester.java
+-------------------------------------
+JobParameters jbp= jbBuilder.addString("user", "MSD")
+	        	.addLong("id", 11199083L)
+	        	.addString("dbQuery", "select * from employee")
+	        	.addString("outputPath1", "file:xml/output.xml")
+	        	.addString("outputPath2", "file:xml/output_db.xml")
+	        	.addString("inputPath", "com/accenture/lkm/resources/employee.csv")
+	        	.toJobParameters();
+
+ 
+ 
+ Refer link: https://docs.spring.io/spring-batch/trunk/reference/html/configureStep.html#late-binding
+
+Late Binding of Job and Step Attributes:
+=======================================
+Both the XML and Flat File examples above use the Spring Resource abstraction to obtain a file. 
+This works because Resource has a getFile method, which returns a java.io.File.
+ Both XML and Flat File resources can be configured using standard Spring constructs:
+
+<bean id="flatFileItemReader"
+      class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="resource"
+              value="file://outputs/20070122.testStream.CustomerReportStep.TEMP.txt" />
+</bean>
+The above Resource will load the file from the file system location specified. 
+Note that absolute locations have to start with a double slash ("//"). 
+In most spring applications, this solution is good enough because the names of these are known at compile time. 
+However, in batch scenarios, the file name may need to be determined at runtime as a parameter to the job. 
+This could be solved using '-D' parameters, i.e. a system property:
+
+<bean id="flatFileItemReader"
+      class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="resource" value="${input.file.name}" />
+</bean>
+All that would be required for this solution to work would 
+be a system argument (-Dinput.file.name="file://file.txt"). 
+(Note that although a PropertyPlaceholderConfigurer can be used here, it is not necessary if the system property is always 
+set because the ResourceEditor in Spring already filters and does placeholder replacement on system properties.)
+
+Often in a batch setting it is preferable to parameterize the file name in the JobParameters of the job, 
+instead of through system properties, and access them that way. 
+
+To accomplish this, Spring Batch allows for the late binding of various Job and Step attributes:
+<bean id="flatFileItemReader" scope="step"
+      class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="resource" value="#{jobParameters['input.file.name']}" />
+</bean>
+Both the JobExecution and StepExecution level ExecutionContext can be accessed in the same way:
+
+<bean id="flatFileItemReader" scope="step"
+      class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="resource" value="#{jobExecutionContext['input.file.name']}" />
+</bean>
+<bean id="flatFileItemReader" scope="step"
+      class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="resource" value="#{stepExecutionContext['input.file.name']}" />
+</bean>
+[Note]
+Any bean that uses late-binding must be declared with scope="step". See for Section 5.4.1, “Step Scope” more information.
+
+[Note]
+If you are using Spring 3.0 (or above) the expressions in step-scoped beans are in the Spring Expression Language, 
+a powerful general purpose language with many interesting features. 
+To provide backward compatibility, if Spring Batch detects the presence of older versions of Spring it 
+uses a native expression language that is less powerful, and has slightly different parsing rules. 
+The main difference is that the map keys in the example above do not need to be quoted with Spring 2.5, 
+but the quotes are mandatory in Spring 3.0.
+
+5.4.1 Step Scope
+All of the late binding examples from above have a scope of "step" declared on the bean definition:
+
+<bean id="flatFileItemReader" scope="step"
+      class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="resource" value="#{jobParameters[input.file.name]}" />
+</bean>
+Using a scope of Step is required in order to use late binding since the bean cannot actually be instantiated until the Step starts, 
+which allows the attributes to be found.
+Because it is not part of the Spring container by default, the scope must be added explicitly, either by using the batch namespace:
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="...">
+<batch:job .../>
+...
+</beans>
+
+Reference Link : https://docs.spring.io/spring-batch/docs/4.3.4/reference/html/step.html#late-binding

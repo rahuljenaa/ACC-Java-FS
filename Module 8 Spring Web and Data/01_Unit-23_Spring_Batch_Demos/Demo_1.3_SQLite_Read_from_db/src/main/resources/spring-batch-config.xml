@@ -1,0 +1,45 @@
+<beans:beans
+	xmlns="http://www.springframework.org/schema/batch"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/batch https://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<beans:import resource="spring-config.xml" />
+
+	<beans:bean id="itemReader"	class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<beans:property name="dataSource" ref="mysql_dataSource" />
+		<beans:property name="sql" value="select * from employee" />
+		<beans:property name="rowMapper">
+			<beans:bean class="org.springframework.jdbc.core.BeanPropertyRowMapper">
+			<beans:property	name="mappedClass" value="com.accenture.ltt.dto.Employee"/>
+			</beans:bean>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="itemProcessor"	class="com.accenture.ltt.transformer.CustomItemProcessor" />
+
+	<!-- ItemWriter writes the data items into output.xml file -->
+	<beans:bean id="itemWriter" 	class="org.springframework.batch.item.xml.StaxEventItemWriter">
+		<beans:property name="resource" value="file:xml/output_db.xml" />
+		<beans:property name="marshaller" ref="recordMarshaller" />
+		<beans:property name="rootTagName" value="employees" />
+	</beans:bean>
+
+	<beans:bean id="recordMarshaller"	class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<beans:property name="classesToBeBound">
+			<beans:list>
+				<beans:value>com.accenture.ltt.dto.Employee</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	
+	<job id="firstBatchJob">
+		<step id="step1">
+			<tasklet>
+				<chunk reader="itemReader" writer="itemWriter"
+					processor="itemProcessor" commit-interval="10"></chunk>
+			</tasklet>
+		</step>
+	</job>
+	
+</beans:beans>
