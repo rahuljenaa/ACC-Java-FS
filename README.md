@@ -139,7 +139,7 @@ ACC-Java-FS/
 | **Spring Boot** | 2.7.3 / 3.x |
 | **Spring Batch** | 4.3.4 |
 
-> 💡 **Interactive Checklist**: Open [checklist.html](checklist.html) in any browser to track your progress topic-by-topic with local persistence.
+> 🌐 **Interactive Checklist**: Live at [**rahuljenaa.github.io/ACC-Java-FS**](https://rahuljenaa.github.io/ACC-Java-FS/) (or open [`index.html`](index.html) locally) to track your progress topic-by-topic with local browser persistence.
 
 ---
 
