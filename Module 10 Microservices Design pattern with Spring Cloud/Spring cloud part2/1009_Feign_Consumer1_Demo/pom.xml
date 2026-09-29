@@ -1,19 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.lkm.accenture</groupId>
-	<artifactId>1009_Feign_Consumer1_Demo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<properties>
-		<spring-cloud.version>2021.0.8</spring-cloud.version>
-	</properties>
-	
-	<parent>
+<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.7.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
+	<groupId>com.lkm.accenture</groupId>
+	<artifactId>1009_Feign_Consumer1_Demo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<properties>
+		<spring-cloud.version>2021.0.8</spring-cloud.version>
+	    <java.version>17</java.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+  </properties>
 	
 	<dependencies>
 		<dependency>

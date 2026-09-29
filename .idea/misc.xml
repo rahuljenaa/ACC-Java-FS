@@ -1,5 +1,15 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenImportingSettings">
+    <option name="autoReloadType" value="ALL" />
+    <option name="downloadDocsAutomatically" value="false" />
+    <option name="downloadSourcesAutomatically" value="false" />
+    <option name="lookForNested" value="true" />
+  </component>
+  <component name="MavenRunnerSettings">
+    <option name="delegateBuildToMaven" value="false" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
@@ -52,7 +62,7 @@
         <option value="$PROJECT_DIR$/Module 7 Spring Stack Essentials/01_SpringTest_Demos/Demo_10003_SpringTest_Testing_DI_Java_Config/pom.xml" />
         <option value="$PROJECT_DIR$/Module 7 Spring Stack Essentials/01_SpringTest_Demos/Demo_10004_SpringTest_Testing_Profile/pom.xml" />
         <option value="$PROJECT_DIR$/Module 7 Spring Stack Essentials/01_SpringTest_Demos/Demo_10005_SpringDI_Intro_Named_JSR330_Annotation_Field_Level/pom.xml" />
-        <option value="$PROJECT_DIR$/Module 7 Spring Stack Essentials/01_SpringTest_Demos/Demo_10006_SpringDI_Intro_Named_JSR330_Annotations_Setter/pom.xml" />
+        <option value="$PROJECT_DIR$/Module 7 Spring Test_Demos/Demo_10006_SpringDI_Intro_Named_JSR330_Annotations_Setter/pom.xml" />
         <option value="$PROJECT_DIR$/Module 7 Spring Stack Essentials/01_SpringTest_Demos/Demo_10007_SpringDI_Intro_Named_JSR330_Constructor/pom.xml" />
         <option value="$PROJECT_DIR$/Module 7 Spring Stack Essentials/01_SpringTest_Demos/Demo_10008_SpringDI_JSR250_Resource_Annotation/pom.xml" />
         <option value="$PROJECT_DIR$/Module 7 Spring Stack Essentials/Activity_10001_SpringTest_Testing_DI_XML_To_Trainee/pom.xml" />
@@ -181,12 +191,4 @@
   <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="21" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
-  <component name="MavenImportingSettings">
-    <option name="autoReloadType" value="ALL" />
-    <option name="downloadDocsAutomatically" value="false" />
-    <option name="downloadSourcesAutomatically" value="false" />
-    <option name="lookForNested" value="true" />
-  </component>
 </project>
-
-
